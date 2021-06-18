@@ -1,0 +1,24 @@
+class Solution {
+    // 283 Easy 移动零 move-zeroes
+    public void moveZeroes(int[] nums) {
+        // 快慢指针
+        int i = 0;
+        int j = 0;
+        while(j < nums.length) {
+            // 慢指针没找到有0的位置时，快慢同步移动
+            if(nums[i] != 0) {
+                i++;
+                j++;
+            } else {
+                // 找到0时，移动快指针
+                while(nums[j] == 0) {
+                    // 边界
+                    if(++j == nums.length)    
+                        return; 
+                }
+                nums[i] = nums[j];
+                nums[j] = 0;
+            }
+        }
+    }
+}
