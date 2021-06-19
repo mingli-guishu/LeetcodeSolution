@@ -5,11 +5,11 @@ class Solution {
         Deque<ListNode> stack = new ArrayDeque<ListNode>();
         ListNode header = new ListNode(0);
         ListNode cur = header;
-        while(head != null){
+        while (head != null){
             stack.push(head);
             head = head.next;
         }
-        while(!stack.isEmpty()){
+        while (!stack.isEmpty()){
             cur.next = stack.pop();
             cur = cur.next;
         }
@@ -19,10 +19,10 @@ class Solution {
     
     //迭代解法
     public ListNode reverseList(ListNode head) {  
-        if(head == null)    return head;
+        if (head == null)    return head;
         ListNode nextnode = head.next;// 指向原链
         ListNode ans = null;// 指向新链
-        while(head != null) {      
+        while (head != null) {      
             nextnode = head.next;
             head.next = ans;// 原链的头成为新链的头
             ans = head;// 使ans指向新链的头
