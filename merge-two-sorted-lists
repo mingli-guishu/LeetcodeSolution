@@ -13,6 +13,6 @@ class Solution {
             }
             cur = cur.next;
         }
-        return header.next;
+        return header.next; 
     }
 }
