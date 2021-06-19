@@ -1,0 +1,28 @@
+class Solution {
+    // 20 Easy 有效的括号 valid-parentheses
+    public boolean isValid(String s) {
+        Deque<Character> stack = new ArrayDeque<Character>();
+        int len = s.length();
+        for (int i = 0; i < len; i++) {
+            char ch = s.charAt(i);
+            if(ch == '(' || ch == '[' || ch == '{')
+                stack.push(cond(ch));
+            else
+                if(stack.isEmpty() || stack.pop() != ch)
+                    return false;
+        }
+        return stack.isEmpty();
+    }
+
+    private char cond(char c) {
+        switch(c){
+            case '(':
+                return ')';
+            case '[':
+                return ']';
+            case '{':
+                return '}';
+        }
+        return 's';// unreachable
+    }
+}
