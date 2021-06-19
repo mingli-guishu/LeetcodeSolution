@@ -1,0 +1,34 @@
+class Solution {
+    // 25 Hard K个一组翻转链表 reverse-nodes-in-k-group
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if(k == 1)  return head;
+        ListNode header = new ListNode(0, head); // 保护节点   
+        ListNode par = head.next;
+        ListNode tmp = null;// 翻转完成之后的结果链
+        ListNode start = header;// 指向上一组的尾节点，在当前组翻转之后与tmp连接
+        ListNode pin = head;// 指向当前组的开头节点，在当前组翻转之后用来连接下一组的头即end
+        ListNode end = head;// 指向下一组的头节点，在当前组翻转之后与pin连接
+        int count = k;// 记录每一组的节点数量是否达到翻转的要求数量
+        while(true){
+            count = k;
+            tmp = null;
+            // 找到下一组的头节点
+            while(count-- != 0) {
+                if(end == null) return header.next;
+                end = end.next;
+            }
+            pin = head;       
+            while(head != end){
+                //迭代
+                par = head.next;
+                head.next = tmp;
+                tmp = head;
+                head = par;
+            }
+            // 翻转完成后，当前组与前后的组完成连接
+            start.next = tmp;// 与前面的组连接
+            pin.next = end;// 与后面的组连接
+            start = pin;// 此时pin正好指向下一次start的位置
+        }
+    }
+}
