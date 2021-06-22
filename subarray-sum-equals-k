@@ -1,0 +1,26 @@
+class Solution {
+    // 560 Medium 和为K的子数组 subarray-sum-equals-k
+    public int subarraySum(int[] nums, int k) {
+        // 双指针前缀和 + Map
+        int ans = 0;
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        map.put(0, 1);
+        int last = 0;
+        int cur = 0;
+        for (int i = 0; i < nums.length; i++) {
+            cur = last + nums[i];
+            // 还没放进去时，先计算
+            if (map.containsKey(cur - k))
+                ans += map.get(cur - k);
+            // 再放进去
+            if (!map.containsKey(cur)) {
+                map.put(cur, 1);
+            } else {
+                int v = map.get(cur);
+                map.put(cur, ++v);
+            }
+            last = cur;
+        }
+        return ans;
+    }
+}
