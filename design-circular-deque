@@ -1,0 +1,217 @@
+class MyCircularDeque {
+    // 641 Medium 设计循环双端队列 design-circular-deque
+    // 链表解法
+    /** Initialize your data structure here. Set the size of the deque to be k. */
+    int cap;
+    int size = 0;
+    ListNode front = null;
+    ListNode last = null;
+    public MyCircularDeque(int k) {
+        cap = k;
+    }
+    
+    /** Adds an item at the front of Deque. Return true if the operation is successful. */
+    public boolean insertFront(int value) {
+        if (isFull())
+            return false;
+        if (front == null) {
+            // 此时什么都没有
+            front = new ListNode(value);
+            last = front;
+        } else {
+            ListNode cur = new ListNode(value);
+            cur.next = front;
+            front.pre = cur;
+            front = cur;
+        }
+        size++;
+        return true;
+    }
+    
+    /** Adds an item at the rear of Deque. Return true if the operation is successful. */
+    public boolean insertLast(int value) {
+        if (isFull())
+            return false;
+        if (last == null) {
+            // 此时什么都没有
+            last = new ListNode(value);
+            front = last;
+        } else {
+            ListNode cur = new ListNode(value);
+            last.next = cur;
+            cur.pre = last;
+            last = cur;
+        }
+        size++;
+        return true;
+    }
+    
+    /** Deletes an item from the front of Deque. Return true if the operation is successful. */
+    public boolean deleteFront() {
+        if (isEmpty())
+            return false;
+        if (size == 1) {
+            front = null;
+            last = null;
+        } else {
+            front = front.next;
+            front.pre = null;         
+        }
+        size--;   
+        return true;
+    }
+    
+    /** Deletes an item from the rear of Deque. Return true if the operation is successful. */
+    public boolean deleteLast() {
+        if (isEmpty())
+            return false;
+        if (size == 1) {
+            last = null;
+            front = null;
+        } else {
+            last = last.pre;
+            last.next = null;
+        }
+        size--;
+        return true;
+    }
+    
+    /** Get the front item from the deque. */
+    public int getFront() {
+        if (isEmpty())
+            return -1;
+        return front.val;
+    }
+    
+    /** Get the last item from the deque. */
+    public int getRear() {
+        if (isEmpty())
+            return -1;
+        return last.val;
+    }
+    
+    /** Checks whether the circular deque is empty or not. */
+    public boolean isEmpty() {
+        if (size == 0)
+            return true;
+        return false;
+    }
+    
+    /** Checks whether the circular deque is full or not. */
+    public boolean isFull() {
+        if (size == cap)
+            return true;
+        return false;
+    }
+
+    private class ListNode {
+        int val;
+        ListNode pre = null;
+        ListNode next = null;
+        ListNode(int val) {
+            this.val = val;
+        }
+    }
+    
+    // 数组解法
+    /** Initialize your data structure here. Set the size of the deque to be k. */
+    int[] deposit;
+    int size = 0;
+    int front;//在前端插入的指针
+    int next;//在后端插入的指针
+    int cap;
+    public MyCircularDeque(int k) {
+        deposit = new int[k];
+        this.cap = k;
+        next = k / 2;
+        front = next - 1;
+    }
+    
+    /** Adds an item at the front of Deque. Return true if the operation is successful. */
+    public boolean insertFront(int value) {
+        if (isFull())
+            return false;
+        if (front == -1) {
+            int moving = grid(0);
+            next += moving;
+            front += moving;
+            for (int i = next - 1; i > front; i--) 
+                deposit[i] = deposit[i - moving];
+        }         
+        deposit[front--] = value;
+        size++;
+        return true;
+    }
+    
+    /** Adds an item at the rear of Deque. Return true if the operation is successful. */
+    public boolean insertLast(int value) {
+        if (isFull())
+            return false;
+        if (next == cap) {
+            int moving = grid(1);
+            front -= moving;
+            next -= moving;
+            for (int i = front + 1; i < next; i++) 
+                deposit[i] = deposit[i + moving];
+        }
+        deposit[next++] = value;
+        size++;
+        return true;
+    }
+    
+    /** Deletes an item from the front of Deque. Return true if the operation is successful. */
+    public boolean deleteFront() {
+        if (isEmpty())
+            return false;
+        front++;
+        size--;
+        return true;
+    }
+    
+    /** Deletes an item from the rear of Deque. Return true if the operation is successful. */
+    public boolean deleteLast() {
+        if (isEmpty())
+            return false;
+        next--;
+        size--;
+        return true;
+    }
+    
+    /** Get the front item from the deque. */
+    public int getFront() {
+        if (isEmpty())
+            return -1;
+        return deposit[front + 1];
+    }
+    
+    /** Get the last item from the deque. */
+    public int getRear() {
+        if (isEmpty())
+            return -1;
+        return deposit[next - 1];
+    }
+    
+    /** Checks whether the circular deque is empty or not. */
+    public boolean isEmpty() {
+        if (size == 0)
+            return true;
+        return false;
+    }
+    
+    /** Checks whether the circular deque is full or not. */
+    public boolean isFull() {
+        if (size == cap)
+            return true;
+        return false;
+    }
+
+    // 计算有一端满了之后需要整体移动的格子数
+    private int grid(int sit) {
+        // 如果是前面满了
+        if (sit == 0) {
+            return (cap - 1 - next) / 2 + 1;
+        } else { //后面满了
+            return front / 2 + 1;
+        }
+    }
+}
