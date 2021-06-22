@@ -1,0 +1,25 @@
+第一周算法小结
+    一.数组、链表、栈、队列
+        内容比较简单，具体内容不多赘述，主要在实战
+        两个比较有意思的模板题
+            // 26 Easy 删除有序列表中的重复项 remove-duplicates-from-sorted-array
+            https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
+            // 283 Easy 移动零 move-zeroes 
+            https://leetcode-cn.com/problems/move-zeroes/
+        都是在一维数组中寻找目标值，copy后返回
+        整体思路一致，一次遍历，利用双指针，把目标值往前复制，再根据题意判断是否要后续处理，完成时间O(n)，空间O(1)的算法
+    二.前缀和、差分、双指针扫描
+        1.前缀和：从数组头到当前位置的所有value和 
+            类似于dp，s[i] = s[i - 1] + A[i] / s[i][j] = s[i - 1][j] + s[i][j - 1] - s[i - 1][j - 1]
+            为了去除特殊性一般如下初始化，使s的长度加一去除头位置的特殊性
+            int[] s = new int[nums.length + 1];
+            优势：可以求得任意连续区间内（一维或二维）数组的和，实战中用于处理连续性区间的问题
+            实战：
+                一维：sum(l, r) = s[r] - s[l - 1]
+                // 1248 Medium 统计[优美子数组] count-number-of-nice-subarrays
+                https://leetcode-cn.com/problems/count-number-of-nice-subarrays/
+                二维：sum(x1, y1, x2, y2) = s[x2][y2] - s[x2][y1 - 1] - s[x1 - 1][y2] + s[x1 - 1][y1 - 1]
+                // 304 Medium 二维区域和检索-矩阵不可变 range-sum-query-2d-immutable
+                // 注意边界位置特殊性，可以 s = new int[nums.length + 1][nums[0].length + 1]，或 if (i == 0 || j == 0) 取0; else 取s[i][j]。总的来说是越界取0
+                https://leetcode-cn.com/problems/range-sum-query-2d-immutable/
+            
