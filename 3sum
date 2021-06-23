@@ -1,0 +1,49 @@
+class Solution {
+    // 15 Medium 三数之和 3sum
+    int[] nums;
+    int len;
+    // 由于答案不能重复，要去重
+    // 不重复的本质是
+    // 1.target不能重复 2.left和right均不能重复，其实只要保证left或right其中一个不与上一次的重复就可以
+    public List<List<Integer>> threeSum(int[] nums) {
+        // 双指针
+        this.nums = nums;
+        this.len = nums.length;
+        List<List<Integer>> ans = new ArrayList<List<Integer>>();
+        Arrays.sort(nums);
+        for (int i = 0; i < len; i++) {
+            // 1.target不能重复
+            if (i > 0 && nums[i] == nums[i - 1])
+                continue;
+            List<List<Integer>> cur = twoSum(i + 1, -nums[i]);
+            for (List<Integer> l : cur)
+                ans.add(l);
+        }
+        return ans;
+    }
+
+    // 两数之和模板
+    // 修改了返回值
+    private List<List<Integer>> twoSum(int index, int target) {
+        List<List<Integer>> cur = new ArrayList<List<Integer>>();
+        int left = index, right = len - 1;
+        while (left < right) {
+            // 2.left和right均不能重复
+            if (left > index && nums[left] == nums[left - 1]) {
+                left++;
+                continue;
+            }
+            while (left < right && nums[left] + nums[right] > target)
+                right--;
+            if (left != right && nums[left] + nums[right] == target) {
+                List<Integer> tmp = new ArrayList<Integer>();
+                tmp.add(nums[left]);
+                tmp.add(nums[right]);
+                tmp.add(-target);
+                cur.add(tmp);
+            }
+            left++;
+        }
+        return cur;
+    }
+}
