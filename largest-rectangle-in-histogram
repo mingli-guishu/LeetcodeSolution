@@ -1,0 +1,37 @@
+class Solution {
+    // 84 Hard 柱状图中最大矩形 largest-rectangle-in-histogram
+    // 整体思路：
+    // 对于heights中每一个高度来说，求出每个高度对应左右可延伸的的长度，即求出这个高度下对应的最大面积，最后对heights中所有面积求max则为ans
+    // 通过从左至右遍历，维护单调递增栈（栈中存的是下标），可以找到每个高度左右可延伸的长度
+    // 左侧最大延伸：由于栈中元素单调递增，对于每个栈顶的元素A，栈中每一个元素都小于A，且这些小于A的元素在heights中都在A的左侧，也就是说，A的左侧不可延伸
+    // 右侧最大延伸：当维护单调栈时，遇到比栈顶元素A更小的元素时，对于A来说就找到了右侧的最大延伸距离，此时左右延伸距离都可以确定了，弹出求面积即可
+    public int largestRectangleArea(int[] heights) {
+        // 单调栈
+        int ans = 0;
+        // 栈存的是下标
+        Deque<Integer> stack = new ArrayDeque<Integer>();
+        // 哨兵，排除Empty的干扰，计算面积时辅助计算下标
+        stack.push(-1);
+        for (int i = 0; i < heights.length; i++) {
+            // 若heights[i] == heights[stack.peek()]，则保留最先入栈的位置，则视作无操作
+            // 如果单调递增（不是单调不减），直接入栈
+            if (stack.peek() == -1 || heights[i] > heights[stack.peek()]) {
+                stack.push(i);
+                continue;
+            }
+            // 如果遇到了更小的高度，那么栈顶的元素就失效了，弹出进行计算
+            while (stack.peek() != -1 && heights[i] < heights[stack.peek()]) {
+                int cur = heights[stack.pop()] * (i - stack.peek() - 1);
+                ans = Math.max(cur, ans);
+            }
+            // 最后将当前的下标入栈
+            stack.push(i);
+        }
+        // 循环结束后若栈非空，一个一个弹出计算
+        while (stack.peek() != -1) {
+            int cur = heights[stack.pop()] * (heights.length - stack.peek() - 1);
+            ans = Math.max(cur, ans);
+        }
+        return ans;
+    }
+}
