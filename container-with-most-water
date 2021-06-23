@@ -1,0 +1,18 @@
+class Solution {
+    // 11 Medium盛水最多的容器 container-with-most-water
+    public int maxArea(int[] height) {
+        // 双指针
+        int left = 0, right = height.length - 1;
+        int ans = 0;
+        while (left < right) {
+            int cur = (right - left) * Math.min(height[left], height[right]);
+            ans = Math.max(cur, ans);
+            // 移动短的一端才有可能找到最大值
+            if (height[left] <= height[right])
+                left++;
+            else
+                right--;
+        }
+        return ans;
+    }
+}
