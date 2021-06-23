@@ -1,0 +1,42 @@
+class Solution {
+    // 53 Easy 最大子序和 maximum-subarray
+    public int maxSubArray(int[] nums) {
+        // 前缀和解法
+        int len = nums.length;
+        int[] s = new int[len + 1];
+        int big = 0;
+        int small = 0;
+        int ans = Integer.MIN_VALUE;
+        for (int i = 1; i < len + 1; i++) {
+            s[i] = s[i - 1] + nums[i - 1];
+            if (nums[i - 1] > ans)
+                ans = nums[i - 1];
+        }
+        // 使得s[i] - s[j] i > j最大的区间段
+        // 单次遍历得到区间段的相对最大值
+        for (int i = 0; i < len + 1; i++) {
+            // 当小于small时先更新small
+            if (s[i] < small) {      
+                small = s[i];
+                big = Integer.MIN_VALUE;
+            } else if (s[i] > big) {
+                // 当大于big时更新ans
+                big = s[i];
+                if (big - small > ans)
+                    ans = big - small;
+            }
+        }
+        return ans;
+    }
+    
+    public int maxSubArray(int[] nums) {
+        // 贪心算法
+        int ans = nums[0];
+        int cur = 0;
+        for (int i = 0; i < nums.length; i++) {
+            cur = Math.max(cur + nums[i], nums[i]);
+            ans = Math.max(ans, cur);
+        }
+        return ans;
+    }
+}
