@@ -11,10 +11,10 @@
     二.前缀和、差分、双指针扫描
         1.前缀和：从数组头到当前位置的所有value和 
             类似于dp，s[i] = s[i - 1] + A[i] / s[i][j] = s[i - 1][j] + s[i][j - 1] - s[i - 1][j - 1]
-            为了去除特殊性一般如下初始化，使s的长度加一去除头位置的特殊性
+            为了去除特殊性一般如下初始化，使s的长度加一去除头位置的特殊性，这也是前缀和的魅力所在
             int[] s = new int[nums.length + 1];
-            优势：可以求得任意连续区间内（一维或二维）数组的和，实战中用于处理连续性区间的问题
-            实战：
+            优势：可以求得任意连续区间内（一维或二维）数组的和，实战中用于处理连续性区间和的问题
+            实战：模板题
                 一维：sum(l, r) = s[r] - s[l - 1]
                 // 1248 Medium 统计[优美子数组] count-number-of-nice-subarrays
                 https://leetcode-cn.com/problems/count-number-of-nice-subarrays/
