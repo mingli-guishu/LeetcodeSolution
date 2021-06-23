@@ -22,4 +22,34 @@
                 // 304 Medium 二维区域和检索-矩阵不可变 range-sum-query-2d-immutable
                 // 注意边界位置特殊性，可以 s = new int[nums.length + 1][nums[0].length + 1]，或 if (i == 0 || j == 0) 取0; else 取s[i][j]。总的来说是越界取0
                 https://leetcode-cn.com/problems/range-sum-query-2d-immutable/
-            
+        2.差分：记录数组中相邻两个value的差值，即各个数的相对大小
+            b[i] = a[i] - a[i - 1]
+            是前缀和的逆运算
+            优势：由于记录的是各个数之间的相对值，所以方便计算数组中一段连续区间的加减
+            例子：一辆公交一共经历五个站，其中前1、2站上来20个人，2、3、4站下去10个人，4、5站上来5个人，求每个站上下的人数（不是每个站车内的总人数）
+               1   2   3   4   5       而差分数组：由于计算的是各个数之间的相对值    1   2   3   4   5
+               20  20                                                             20     -20
+                  -10 -10  -10                                                       -10         -10
+                            5   5                                                             5
+            则 20  10  -10 -5   5                                        差分数组 20 -10 -20  5   10
+                                                                         求前缀和 20  10 -10  -5   5   
+            实战：模板题
+            // 1109 Medium 航班预定统计 corporate-flight-bookings
+            https://leetcode-cn.com/problems/corporate-flight-bookings/
+        3.双指针：
+            优势：不需要考虑指针之间区间的情况，而只是看两个指针（两个点）各自移动时有什么影响
+            实战：模板题
+            // 167 Easy 两数之和 two-sum-ii-input-array-is-sorted
+            https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
+            // 15 Medium 三数之和 3sum
+            https://leetcode-cn.com/problems/3sum/
+            // 11 Medium 盛最多水的容器 container-with-most-water
+            https://leetcode-cn.com/problems/container-with-most-water/
+        4.单调栈、单调队列
+            优势：利用单调递增性质，解决连通性较强的问题，如求面积。是针对整个区间所有点的所以不能用双指针。不满足区间减法性质，区间内每个值都会影响整个区间情况，不能用前缀和。
+            实战：单调栈模板题
+            // 84 Hard 柱状图中最大的矩形 largest-rectangle-in-histogram
+            https://leetcode-cn.com/problems/largest-rectangle-in-histogram/
+            实战：模板题
+            // 239 Hard 滑动窗口的最大值 sliding-window-maximum
+            https://leetcode-cn.com/problems/sliding-window-maximum/
