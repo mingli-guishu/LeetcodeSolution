@@ -1,0 +1,16 @@
+class Solution {
+    // 1 Easy 两数之和 two-sum
+    public int[] twoSum(int[] nums, int target) {
+        // HashMap
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(target - nums[i]))
+                return new int[] {map.get(target - nums[i]), i};
+            map.put(nums[i], i);
+        }
+        return new int[0];
+    }
+    // 为什么不用双指针?
+    // 首先数组是乱序的并且要求返回下标，若用双指针必须要sort()，下标会乱
+    // 如果用双指针要么单独构建一个class{int val, int index}，而Key-Value是最好的解决方法，Map是最佳的数据结构
+}
