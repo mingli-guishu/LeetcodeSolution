@@ -32,24 +32,27 @@
                   -10 -10  -10                                                       -10         -10
                             5   5                                                             5
             则 20  10  -10 -5   5                                        差分数组 20 -10 -20  5   10
-                                                                         求前缀和 20  10 -10  -5   5   
+                                                                         求前缀和 20  10 -10  -5   5  
+            对任意的i，若a[i]增加，由于差分数组记录的是各个数的相对大小，所以a[i]之后的所有数都增加，因为所记录的相对大小不变，为了消除某些位置的增加，需要减小a[j]
             实战：模板题
             // 1109 Medium 航班预定统计 corporate-flight-bookings
             https://leetcode-cn.com/problems/corporate-flight-bookings/
         3.双指针：
             优势：不需要考虑指针之间区间的情况，而只是看两个指针（两个点）各自移动时有什么影响
             实战：模板题
-            // 167 Easy 两数之和 two-sum-ii-input-array-is-sorted
+            // 167 Easy 两数之和Ⅱ-输入有序数组 two-sum-ii-input-array-is-sorted
             https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
             // 15 Medium 三数之和 3sum
             https://leetcode-cn.com/problems/3sum/
             // 11 Medium 盛最多水的容器 container-with-most-water
             https://leetcode-cn.com/problems/container-with-most-water/
         4.单调栈、单调队列
-            优势：利用单调递增性质，解决连通性较强的问题，如求面积。是针对整个区间所有点的所以不能用双指针。不满足区间减法性质，区间内每个值都会影响整个区间情况，不能用前缀和。
+            维护一个单调递增（递减）的栈/队列
+            优势：利用单调递增性质，解决各个元素之间关联性较强的问题，如求最大面积。
+                  是针对整个区间所有点的所以不能用双指针。不满足区间减法性质，区间内每个值都会影响整个区间情况，不能用前缀和。
             实战：单调栈模板题
             // 84 Hard 柱状图中最大的矩形 largest-rectangle-in-histogram
             https://leetcode-cn.com/problems/largest-rectangle-in-histogram/
-            实战：模板题
+            实战：单调队列模板题
             // 239 Hard 滑动窗口的最大值 sliding-window-maximum
             https://leetcode-cn.com/problems/sliding-window-maximum/
