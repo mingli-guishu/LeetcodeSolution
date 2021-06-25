@@ -1,0 +1,39 @@
+class Solution {
+    // 874 Easy 模拟行走机器人 walking-robot-simulation
+    // 方向: N  E  S  W
+    //  dir: 0  1  2  3
+    //    x: 0  1  0  -1
+    //    y: 1  0  -1  0
+    final int[] xset = {0, 1, 0, -1};
+    final int[] yset = {1, 0, -1, 0};
+    public int robotSim(int[] commands, int[][] obstacles) {
+        int dir = 0;// 一开始向北
+        int x = 0, y = 0;
+        int ans = 0;
+        HashSet<Long> set = new HashSet<>();
+        // 把所有障碍放入set
+        for (int i = 0; i < obstacles.length; i++)
+            set.add(trans(obstacles[i][0], obstacles[i][1]));
+        
+        for (int cmd : commands) {
+            if (cmd == -1) //右转
+                dir = (dir + 1) % 4;
+            else if (cmd == -2) //左转
+                dir = (dir + 3) % 4;
+            else {
+                for (int i = 0; i < cmd; i++) {
+                    if (set.contains(trans(x + xset[dir], y + yset[dir])))
+                        break;
+                    x = x + xset[dir];
+                    y = y + yset[dir];
+                    ans = Math.max(ans, x * x + y * y);
+                }
+            }
+        }
+        return ans;
+    }
+    // 由于坐标范围(-30000, -30000)到(30000, 30000)，为除去负数干扰，在set中存储long
+    private long trans(int x, int y) {
+        return (x + 30000) * 100000 + y + 30000;
+    }
+}
