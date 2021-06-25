@@ -1,0 +1,32 @@
+class Solution {
+    // 42 Hard 接雨水 trapping-rain-water
+    // 具体思路参考最大矩形的单调递增栈
+    public int trap(int[] height) {
+        // 单调栈
+        int ans = 0;
+        // 维护一个存储下标的单调递减栈
+        Deque<Integer> stack = new ArrayDeque<Integer>();
+        for (int i = 0; i < height.length; i++) {
+            if (stack.isEmpty()) {
+                // 只是为了省略刚开始时的那些空格
+                if (height[i] != 0)
+                    stack.push(i);
+                continue;
+            }
+            // 递减则直接入栈
+            if (height[i] < height[stack.peek()]) {
+                stack.push(i);
+                continue;
+            }
+            // 找到了右边界
+            while (height[i] > height[stack.peek()]) {
+                int h = height[stack.pop()];
+                if (stack.isEmpty())
+                    break;
+                ans += (Math.min(height[i], height[stack.peek()]) - h) * (i - stack.peek() - 1);
+            }
+            stack.push(i);
+        }
+        return ans;
+    }
+}
