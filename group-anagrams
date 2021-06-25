@@ -1,0 +1,36 @@
+class Solution {
+    // 49 Medium 字母异位词分组 group-anagrams
+    public List<List<String>> groupAnagrams(String[] strs) {
+        // HashMap解法
+        List<List<String>> ans = new ArrayList<List<String>>();
+        HashMap<String, List<String>> map = new HashMap<>();
+        for (int i = 0; i < strs.length; i++) {
+            String cur = trans(strs[i]);
+            // getOrDefault(Object key, V defaultValue): Returns the value to which the specified key is mapped, or defaultValue if this map contains no mapping for the key.
+            // List<String> l = map.getOrDefault(cur, new ArrayList<String>());
+            // 以下方法体可用以上语句替代
+            if (map.containsKey(cur)) {
+                List<String> l = map.get(cur);
+                l.add(strs[i]);
+                map.put(cur, l);
+            } else {
+                List<String> l = new ArrayList<String>();
+                l.add(strs[i]);
+                map.put(cur, l);
+            }
+        }
+        for (String key : map.keySet()) {
+            List<String> l = map.get(key);
+            ans.add(l);
+        }
+        return ans;
+        // 或通过map.values()返回Collection而不用遍历keySet
+        // return new ArrayList<List<String>>(map.values());
+    }
+
+    private String trans(String target) {
+        char[] c = target.toCharArray();
+        Arrays.sort(c);
+        return new String(c);
+    }
+}
