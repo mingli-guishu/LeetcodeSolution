@@ -1,0 +1,29 @@
+class Solution {
+    // 77 Medium 组合 combinations
+    List<List<Integer>> ans;
+    List<Integer> set;
+    public List<List<Integer>> combine(int n, int k) {
+        ans = new ArrayList<List<Integer>>();
+        set = new ArrayList<Integer>();
+        getans(k, n, 1);
+        return ans;
+    }
+
+    private void getans(int k, int n, int index) {
+        // 终止条件
+        if (set.size() == k) {
+            ans.add(new ArrayList<Integer>(set));
+            return;
+        }
+        // 去除冗余，即使剩下的数都放进去都不够k个
+        // 注意：此时的index是还没放进去的数，记得+1
+        if (set.size() + n - index + 1 < k)
+            return;
+        // 选
+        set.add(index);
+        getans(k, n, index + 1);
+        set.remove(set.size() - 1);
+        // 不选
+        getans(k, n, index + 1);
+    }
+}
