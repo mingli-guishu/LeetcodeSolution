@@ -1,0 +1,26 @@
+class Solution {
+    // 78 Medium 子集 subsets
+    List<List<Integer>> ans;
+    List<Integer> set;
+    public List<List<Integer>> subsets(int[] nums) {
+        ans = new ArrayList<List<Integer>>();
+        set = new ArrayList<Integer>();
+        getans(nums, 0);
+        return ans;
+    }
+    
+    // 递归
+    private void getans(int[] nums, int index) {
+        // 终止条件
+        if (index == nums.length) {
+            ans.add(new ArrayList<Integer>(set));
+            return;
+        }
+        // 不选
+        getans(nums, index + 1);
+        // 选
+        set.add(nums[index]);
+        getans(nums, index + 1);
+        set.remove(set.size() - 1);
+    }
+}
