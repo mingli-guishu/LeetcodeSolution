@@ -1,0 +1,36 @@
+class Solution {
+    // 47 Medium 全排列Ⅱ permutations-ii
+    List<List<Integer>> ans;
+    List<Integer> set;
+    boolean[] check;
+    int len;
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        Arrays.sort(nums);
+        this.len = nums.length;
+        check = new boolean[len];
+        ans = new ArrayList<List<Integer>>();
+        set = new ArrayList<Integer>();
+        getans(nums, 0);
+        return ans;
+    }
+
+    private void getans(int[] nums, int count) {
+        // 终止条件
+        if (count == len) {
+            ans.add(new ArrayList<Integer>(set));
+            return;
+        }
+        for (int i = 0; i < len; i++) {
+            if (!check[i]) {
+                // 去重，当与前面的数相同，并且前面的数还未使用，因为此时已经计算过以前面的的数开头的情况了
+                if (i > 0 && nums[i] == nums[i - 1] && !check[i - 1])
+                    continue;
+                set.add(nums[i]);
+                check[i] = true;
+                getans(nums, count + 1);
+                set.remove(set.size() - 1);
+                check[i] = false;
+            }
+        }
+    } 
+}
