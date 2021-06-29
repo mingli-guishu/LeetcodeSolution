@@ -1,0 +1,19 @@
+class Solution {
+    // 50 Medium Pow(x, n) powx-n
+    public double myPow(double x, int n) {
+        // 终止条件
+        if (n == 0)
+            return 1;
+        if (n == Integer.MIN_VALUE)
+            return 1 / (myPow(x, Integer.MAX_VALUE) * x);
+        if (n < 0)
+            return 1 / myPow(x, -n);
+        // 分治
+        double half = myPow(x, n / 2);
+        if (n % 2 == 0)
+            return half * half;
+        else
+            return half * half * x;
+
+    }
+}
