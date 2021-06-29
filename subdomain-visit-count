@@ -1,0 +1,23 @@
+class Solution {
+    // 811 Easy 子域名访问计数 subdomain-visit-count
+    public List<String> subdomainVisits(String[] cpdomains) {
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        List<String> ans = new ArrayList<String>();
+        for (int i = 0; i < cpdomains.length; i++) {
+            String[] res = cpdomains[i].split(" ");
+            int count = Integer.parseInt(res[0]);// 得到访问次数
+            int len = res[1].length();
+            for (int j = len - 1; j >= -1; j--) {
+                if (j == -1 || res[1].charAt(j) == '.') {
+                    String cur = res[1].substring(j + 1, len);
+                    int v = map.getOrDefault(cur, 0);
+                    map.put(cur, v + count);
+                }
+            }
+        }
+        for (String s : map.keySet()) {
+            ans.add(map.get(s) + " " + s);
+        }
+        return ans;
+    }
+}
