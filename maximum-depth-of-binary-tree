@@ -4,7 +4,8 @@ class Solution {
         // 终止条件
         if (root == null)
             return 0;
-        // 当前层总是比下一层浅1个单位
+        // 由于是找最大深度，所以对左右子树求max后+1，而求max很明显只要还有子树就一直向深层递归，所以方法体只是求return Math.max
+        // 而另一类似的题，求最前浅深度就需要分类讨论，用的是Math.min，需要找到最浅的叶子（左右子树都为null），而不是找到到null就返回
         return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
     }
 }
