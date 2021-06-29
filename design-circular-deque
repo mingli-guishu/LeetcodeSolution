@@ -117,8 +117,8 @@ class MyCircularDeque {
     /** Initialize your data structure here. Set the size of the deque to be k. */
     int[] deposit;
     int size = 0;
-    int front;//在前端插入的指针
-    int next;//在后端插入的指针
+    int front;// 在前端插入的指针
+    int next;// 在后端插入的指针
     int cap;
     public MyCircularDeque(int k) {
         deposit = new int[k];
