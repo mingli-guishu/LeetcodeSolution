@@ -42,4 +42,6 @@ class Solution {
         // 左子树的最大值不能大于父节点，右子树最小值不能小于父节点，改变max与min即可
         return check(root.left, (long)root.val, min) && check(root.right, max, (long)root.val);
     }
+    
+    // 还有一个中序遍历的解法也不错
 }
