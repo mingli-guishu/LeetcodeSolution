@@ -1,0 +1,42 @@
+class Solution {
+    // 697 Easy 数组的度 degree-of-an-array
+    // 返回与nums拥有相同大小的度的最短连续子数组的长度。比如[1,2,2,3,1,4,2]，数组的度为3，它的度为3的最短连续子数组是[2,2,3,1,4,2]，返回该子数组长度6。
+    public int findShortestSubArray(int[] nums) {
+        HashMap<Integer, Node> map = new HashMap<>();
+        Node max = null;// 出现次数最多的数对应的数据
+        for (int i = 0; i < nums.length; i++) {
+            Node node = map.getOrDefault(nums[i], null);
+            if (node == null) {
+                map.put(nums[i], new Node(1, i));
+            } else {
+                node.times++;
+                node.tail = i;
+            }
+        }
+        for (int key : map.keySet()) {
+            Node node = map.get(key);
+            if (max == null)
+                max = node;
+            // 发现出现次数更多的数，替换
+            if (node.times > max.times) {
+                max = node;
+            } else if (node.times == max.times) {
+                // 出现次数相同的数，取第一次出现与最后一次出现相差较小的
+                if (max.tail - max.head > node.tail - node.head)
+                    max = node;
+            }
+        }
+        return max.tail - max.head + 1;
+    }
+
+    private class Node {
+        int times;// 出现的次数
+        int head;// 第一次出现的位置
+        int tail;// 最后一次出现的位置
+        public Node (int times, int head) {
+            this.times = times;
+            this.head = head;
+            this.tail = head;
+        }
+    }
+}
