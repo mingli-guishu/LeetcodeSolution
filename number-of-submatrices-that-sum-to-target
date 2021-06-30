@@ -1,0 +1,47 @@
+class Solution {
+    // 1074 Hard 元素和为目标值的子矩阵数量 number-of-submatrices-that-sum-to-target
+    // 整体思路：参考1.两数之和 与 560.和为K的子数组
+    // 因为矩阵内的情况未知，使用的是暴力枚举的方法，所以首先需要两个for循环。但两个for循环只能确定一个矩阵内的一个点，若纯暴力至少需要一个int[][] + 四个for来确定一个矩阵
+    // 根据dp的优化，其实每个前缀和的二维数组可以简化为一维数组，每个二维矩阵在求值时也可以被压缩成一维矩阵，所以降低时间复杂度的方法是把二维压成一维
+    // 这一篇题解的图比较清楚https://leetcode-cn.com/problems/number-of-submatrices-that-sum-to-target/solution/dong-tu-yan-shi-ha-xi-biao-qian-zhui-he-wq9f4/
+    public int numSubmatrixSumTarget(int[][] matrix, int target) {
+        // 前缀和 + HashMap
+        int rows = matrix.length;// 行数
+        int cols = matrix[0].length;// 列数
+        int ans = 0;
+        // 确定检索范围的上边界。将会逐步减小最大矩阵的行数，换句话说，就是逐渐向下封顶，向下减小搜索范围
+        for (int i = 0; i < rows; i++) {
+            // 被压缩的二维矩阵
+            int[] s = new int[cols];
+            // 确定检索范围的下边界，前缀和的算法使得不需要确定左右边界。保持上边界不动，移动下边界到底，再挪动上边界并重置下边界，使得所有行的组合都能检索到
+            for (int j = i; j < rows; j++) {
+                // 检索当前的第j行
+                for (int k = 0; k < cols; k++) {
+                    // 每个s[k]代表的是目前为止，从上边界到下边界每列的和
+                    // 此时不能求前缀和，否则会导致重复计算一些值
+                    s[k] += matrix[j][k];
+                }
+                // 将当前的到的二维矩阵，通过卡左右边界得到目标结果
+                ans += getans(s, cols, target);
+            }
+        }
+        return ans;
+    }
+    
+    // 得到多行压缩成一行的矩阵，通过前缀和求目标结果
+    private int getans(int s[], int len, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        int res = 0;
+        int pre = 0, cur = 0;
+        for (int m = 0; m < len; m++) {
+            cur = s[m] + pre;// 求前缀和
+            res += map.getOrDefault(cur - target, 0);
+            map.put(cur, map.getOrDefault(cur, 0) + 1);
+            pre = cur;
+        }
+        return res;
+    }
+    // 为什么不开头求出所有的二维前缀和并用一个HashMap直接得到结果？
+    // 因为对于每一个矩阵，通过枚举其右下角(x2, y2)时，必须只能考虑x < x2，y < y2的点，否则会重复计算，而for循环按行或按列遍历时，一个map一定会存储到此范围之外的点，引起重复计算
+}
