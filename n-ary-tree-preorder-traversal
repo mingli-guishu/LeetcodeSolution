@@ -1,0 +1,18 @@
+class Solution {
+    // 589 Easy N叉树的前序遍历 n-ary-tree-preorder-traversal
+    List<Integer> ans;
+    public List<Integer> preorder(Node root) {        
+        ans = new ArrayList<Integer>();
+        getans(root);
+        return ans;
+    }
+
+    private void getans(Node root) {
+        if (root == null)
+            return;
+        ans.add(root.val);
+        for (Node node : root.children) {
+            getans(node);
+        }
+    }
+}
