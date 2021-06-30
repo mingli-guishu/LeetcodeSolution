@@ -1,0 +1,17 @@
+class Solution {
+    // 94 Easy 二叉树的中序遍历 binary-tree-inorder-traversal
+    List<Integer> ans;
+    public List<Integer> inorderTraversal(TreeNode root) {
+        ans = new ArrayList<Integer>();
+        getans(root);
+        return ans;
+    }
+
+    private void getans(TreeNode root) {
+        if (root == null)
+            return;
+        getans(root.left);
+        ans.add(root.val);
+        getans(root.right);
+    } 
+}
