@@ -1,33 +1,3 @@
-算法题，先整体再抠细节
-long long表示长长整形
-
-char >= '0' && char <= '9'表示所有正数？数字？
-
-第一课遗留
-// 224 Hard 基本计算器 basic-calculator
-https://leetcode-cn.com/problems/basic-calculator/
-
-// 142 Medium 环形列表Ⅱ linked-list-cycle-ii
-https://leetcode-cn.com/problems/linked-list-cycle-ii/
-
-// AcWing136 邻值查找
-https://www.acwing.com/problem/content/description/138/
-
-找冗余
-
-直播中为什么hash函数要(x + 30000) * 600011这个600011怎么来的？
-方向数组？
-
-第二课遗留
-// 30 Hard 串联所有单词的字串 substring-with-concatenation-of-all-words
-https://leetcode-cn.com/problems/substring-with-concatenation-of-all-words/
-
-回溯递归
-剪枝
-语法糖？
-top down 自顶向下
-// 22 Medium 括号生成 generate-parentheses
-https://leetcode-cn.com/problems/generate-parentheses/
 第二周算法小结
     一、无序集合、映射
         HashMap是老生常谈的数据结构了，也曾读过map的源码，写过一两篇blog，就不展开讲
