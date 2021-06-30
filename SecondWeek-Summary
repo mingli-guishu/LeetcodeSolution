@@ -1,1 +1,71 @@
+算法题，先整体再抠细节
+long long表示长长整形
+
+char >= '0' && char <= '9'表示所有正数？数字？
+
+第一课遗留
+// 224 Hard 基本计算器 basic-calculator
+https://leetcode-cn.com/problems/basic-calculator/
+
+// 142 Medium 环形列表Ⅱ linked-list-cycle-ii
+https://leetcode-cn.com/problems/linked-list-cycle-ii/
+
+// AcWing136 邻值查找
+https://www.acwing.com/problem/content/description/138/
+
+找冗余
+
+直播中为什么hash函数要(x + 30000) * 600011这个600011怎么来的？
+方向数组？
+
+第二课遗留
+// 30 Hard 串联所有单词的字串 substring-with-concatenation-of-all-words
+https://leetcode-cn.com/problems/substring-with-concatenation-of-all-words/
+
+回溯递归
+剪枝
+语法糖？
+top down 自顶向下
+// 22 Medium 括号生成 generate-parentheses
+https://leetcode-cn.com/problems/generate-parentheses/
+第二周算法小结
+    一、无序集合、映射
+        HashMap是老生常谈的数据结构了，也曾读过map的源码，写过一两篇blog，就不展开讲
+        优势：存储映射，O(1)添加，O(1)搜索
+        map的遍历：Key key : map.keySet() 或 map.values()直接返回value的集合 或 Iterator iter = map.keySet().iterator();
+        (1) 记录数据信息，利用其快速定位优势的实战：
+            // 560 Medium 和为K的子数组 subarray-sum-equals-k
+            https://leetcode-cn.com/problems/subarray-sum-equals-k/
+            // 697 Easy 数组的度 degree-of-an-array
+            https://leetcode-cn.com/problems/degree-of-an-array/
+            // 146 Medium LRU缓存机制 lru-cache
+            https://leetcode-cn.com/problems/lru-cache/
+        (2) 存储映射，记录答案的实战：
+            // 49 Medium 字母异位词分组 group-anagrams
+            https://leetcode-cn.com/problems/group-anagrams/
+            // 811 Easy 子域名访问计数 subdomain-visit-count
+            https://leetcode-cn.com/problems/subdomain-visit-count/
+    二、递归、分治
+        1.递归：终止条件 + 方法体 + 状态还原。常用于树，回溯，分治，dp
+            由于递归没有太强的理论性，只能多写，多画画递归树来帮助前期理解
+            优势：代码简洁，可读性强，把问题小块化
+            (1) 递归书写实战：两个模板题
+                // 77 Medium 组合 combinations
+                https://leetcode-cn.com/problems/combinations/
+                // 46 Medium 全排列 permutations
+                https://leetcode-cn.com/problems/permutations/
+            (2) 递归在树中的实战：
+                // 226 Easy 翻转二叉树 invert-binary-tree
+                https://leetcode-cn.com/problems/invert-binary-tree/description/
+                // 98 Medium 验证二叉搜索树 validate-binary-search-tree
+                https://leetcode-cn.com/problems/validate-binary-search-tree/
+                // 111 Easy 二叉树的最小深度 minimum-depth-of-binary-tree
+                https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/
+        2.分治：把复杂问题分成多个简单的子问题，通常搭配递归
+            优势：承接递归优势之外，可以很清晰的领会整体思路
+            实战：
+                // 50 Medium Pow(x, n) powx-n
+                https://leetcode-cn.com/problems/powx-n/
+                // 23 Hard 合并K个升序链表 merge-k-sorted-lists
+                https://leetcode-cn.com/problems/merge-k-sorted-lists/
 
