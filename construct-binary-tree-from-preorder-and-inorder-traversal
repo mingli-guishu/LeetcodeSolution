@@ -1,0 +1,31 @@
+class Solution {
+    // 105 Medium 从前序与中序遍历序列构造二叉树 construct-binary-tree-from-preorder-and-inorder-traversal
+    int[] preorder;
+    int[] inorder;
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        this.preorder = preorder;
+        this.inorder = inorder;
+        return create(0, preorder.length - 1, 0, inorder.length - 1);
+    }
+
+    // 把数组分段创建二叉树
+    // l1,r1为preorder对应的一段，l2,r2为inorder相应的一段
+    private TreeNode create(int l1, int r1, int l2, int r2) {
+        // 终止条件
+        if (l1 > r1)
+            return null;
+        // 对前序数组，首位置是root
+        // 找到中序的根的位置
+        int rootindex = l2;
+        while (inorder[rootindex] != preorder[l1])
+            rootindex++;
+        TreeNode node = new TreeNode(preorder[l1]);
+        // 左子树长度: rootindex - l2
+        node.left = create(l1 + 1, l1 + rootindex - l2, l2, rootindex - 1);
+        node.right = create(l1 + rootindex - l2 + 1, r1, rootindex + 1, r2);
+        return node;
+    }
+
+    // [3 | 9 | 20,15,7] preorder
+    // [9 | 3 | 15,20,7] inorder
+}
