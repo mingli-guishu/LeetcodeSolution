@@ -1,0 +1,79 @@
+class Solution {
+    // 429 Medium N叉树的层序遍历 n-ary-tree-level-order-traversal
+    // 方法一：迭代法，创建一个新class，包装Node并加上深度信息
+    public List<List<Integer>> levelOrder(Node root) {
+        List<List<Integer>> ans = new ArrayList<List<Integer>>();
+        if (root == null)   return ans;
+        List<Integer> curlevel = new ArrayList<Integer>();// 当前层
+        Deque<Info> q = new ArrayDeque<Info>();// 维护一个先进先出的队列
+        int curdepth = 0;// 当前搜索的深度
+        q.offerLast(new Info(root.val, 0, root.children));
+        while (!q.isEmpty()) {
+            // 当当前层的节点全部装完了，进入下一层。所以需要不断的check队头节点的深度发生变化
+            if (curdepth != q.peekFirst().depth) {
+                ans.add(curlevel);
+                curlevel = new ArrayList<Integer>();
+                curdepth++;
+            }
+            Info cur = q.pollFirst();
+            curlevel.add(cur.val);
+            // 把当前Node的children放进队尾，也就是在搜索当前层时，给List加val并向队列插入下一层的Node
+            for (Node node : cur.children) {
+                q.offerLast(new Info(node.val, curdepth + 1, node.children));
+            }
+        }
+        // 此时最后一层还没有放进ans
+        ans.add(curlevel);
+        return ans;
+    }
+
+    private class Info {
+        int val;
+        int depth;
+        List<Node> children;
+        public Info(int val, int depth, List<Node> children) {
+            this.val = val;
+            this.depth = depth;
+            this.children = children;
+        }
+    }
+    
+    // 方法二：迭代法，在方法一的基础上，本来需要不断的查看队头节点的深度，此方法在未添加下一层节点时先确定当前层有多少个节点，再向队列添加child而省去check depth的步骤
+    public List<List<Integer>> levelOrder(Node root) {
+        List<List<Integer>> ans = new ArrayList<List<Integer>>();
+        if (root == null)   return ans;
+        Queue<Node> q = new ArrayDeque<>();
+        q.offer(root);
+        while (!q.isEmpty()) {
+            // 先确定当前层有多少个node，这样使得后面添加node.children时不会影响当前层的node的添加
+            int cursize = q.size();
+            List<Integer> curlevel = new ArrayList<>();
+            for (int i = 0; i < cursize; i++) {
+                Node node = q.poll();
+                curlevel.add(node.val);
+                q.addAll(node.children);
+            }
+            ans.add(curlevel);
+        }
+        return ans;
+    }
+    
+    // 方法三：递归
+    List<List<Integer>> ans;
+    public List<List<Integer>> levelOrder(Node root) {
+        ans = new ArrayList<List<Integer>>();
+        if (root != null)
+            getlevel(root, 0);
+        return ans;
+    }
+
+    private void getlevel(Node node, int level) {
+        // 第一次进入该层需要新开一个list
+        if (ans.size() == level)
+            ans.add(new ArrayList<Integer>());
+        // 根据层添加节点
+        ans.get(level).add(node.val);
+        for (Node child : node.children)
+            getlevel(child, level + 1);
+    }
+}
