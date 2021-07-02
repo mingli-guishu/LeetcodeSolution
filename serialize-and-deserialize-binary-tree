@@ -1,0 +1,44 @@
+public class Codec {
+    // 297 Hard 二叉树的序列化与反序列化 serialize-and-deserialize-binary-tree
+    StringBuilder builder;
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        // 前序
+        builder = new StringBuilder();
+        createString(root);
+        return builder.toString();
+    }
+
+    // 前序遍历二叉树
+    private void createString(TreeNode root) {
+        if (root == null) {
+            builder.append("null");
+            builder.append(';');
+            return;
+        }
+        builder.append(root.val);
+        builder.append(';');
+        createString(root.left);
+        createString(root.right);
+    }
+
+    int curpo = 0;
+    String[] recieve;
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        recieve = data.split(";");
+        return createTree();
+    }
+
+    // 反前序创建二叉树
+    private TreeNode createTree() {
+        if (recieve[curpo].equals("null")) {
+            curpo++;
+            return null;
+        }
+        TreeNode node = new TreeNode(Integer.parseInt(recieve[curpo++]));
+        node.left = createTree();
+        node.right = createTree();
+        return node;
+    }
+}
