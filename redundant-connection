@@ -34,18 +34,17 @@ class Solution {
 
     // 深度优先搜索查看有没有环
     private void dfs(int cur, int farther) {
-        // 得到环后强制返回
+        // 终止条件
         if (hasCycle)
             return;
-        // 终止条件
-        if (visit[cur]) {
-            hasCycle = true;
-            return;
-        }
         visit[cur] = true;
         for (int next : alledges.get(cur)) {
             if (next == farther) // 防止原路返回
                 continue;
+            if (visit[cur]) {
+                hasCycle = true;
+                return;
+            }
             dfs(next, cur);
         }
     }
