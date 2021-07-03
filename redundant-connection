@@ -1,5 +1,6 @@
 class Solution {
     // 684 Medium 冗余连接 redundant-connection
+    // 全局解法
     List<List<Integer>> alledges;// 存储图数据
     boolean[] visit;// 是否已访问
     boolean hasCycle = false;
@@ -48,4 +49,6 @@ class Solution {
             dfs(next, cur);
         }
     }
+    
+    // 并查集解法
 }
