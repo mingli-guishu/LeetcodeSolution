@@ -8,6 +8,8 @@ class Solution {
         return create(0, preorder.length - 1, 0, inorder.length - 1);
     }
 
+    // [3 | 9 | 20,15,7] pre
+    // [9 | 3 | 15,20,7] in
     // 把数组分段创建二叉树
     // l1,r1为preorder对应的一段，l2,r2为inorder相应的一段
     private TreeNode create(int l1, int r1, int l2, int r2) {
@@ -26,6 +28,5 @@ class Solution {
         return node;
     }
 
-    // [3 | 9 | 20,15,7] preorder
-    // [9 | 3 | 15,20,7] inorder
+    // dfs解法
 }
