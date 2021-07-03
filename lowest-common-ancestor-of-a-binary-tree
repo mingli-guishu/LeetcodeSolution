@@ -32,4 +32,31 @@ class Solution {
             familyTree(root.right);
         }
     }
+    
+    // 递归法
+    TreeNode ans;
+    TreeNode p;
+    TreeNode q;
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        this.p = p;
+        this.q = q;
+        dfs(root);
+        return ans;
+    }
+    
+    private boolean dfs(TreeNode root) {
+        // 终止条件
+        if (root == null)
+            return false;
+        // 左右子树是否含有p或q
+        boolean l = dfs(root.left);
+        boolean r = dfs(root.right);
+        // l && r 表示p,q一个在左子树一个在右子树，满足p与q的公共祖先条件
+        // (root.val == p.val || root.val == q.val) && (l || r) 表示当前节点是p或q，并且剩下的q或p位于左子树或右子树中，满足p与q的公共祖先条件
+        // 因为是深度优先遍历，在找到p和q的位置后是从下往上寻找祖先的，所以返回的一定是最深的祖先
+        if ((l && r) || ((root.val == p.val || root.val == q.val) && (l || r)))
+            ans = root;
+        // 如果当前root的左右子树含有p或q，或当前root就是p或q则返回true。表示在root节点及以下至少含有p或q的一个
+        return l || r || (root.val == p.val || root.val == q.val);
+    }
 }
