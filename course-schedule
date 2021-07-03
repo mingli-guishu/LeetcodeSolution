@@ -1,0 +1,39 @@
+class Solution {
+    // 207 Medium 课程表 course-schedule
+    List<List<Integer>> edges;// 存储图
+    int[] inDeg;// 每个点的入度
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // BFS + 入度
+        edges = new ArrayList<List<Integer>>();
+        inDeg = new int[numCourses];
+        for (int i = 0; i < numCourses; i++)
+            edges.add(new ArrayList<Integer>());
+        // 建立图并统计入度数量
+        for (int i = 0; i < prerequisites.length; i++) {
+            // 对于(u,v)，从 v ——> u
+            edges.get(prerequisites[i][1]).add(prerequisites[i][0]);
+            inDeg[prerequisites[i][0]]++;
+        }
+        return bfs(numCourses);
+    }
+
+    private boolean bfs(int n) {
+        Queue<Integer> q = new ArrayDeque<Integer>();
+        int count = 0;// 已经学习的课的数量
+        // 从入度为0的点出发
+        for (int i = 0; i < n; i++) 
+            if (inDeg[i] == 0) {// 入度为0表示该课可以直接学习
+                q.offer(i);// 进入队列表示学了
+                count++;
+            }
+        while (!q.isEmpty()) {
+            for (int next : edges.get(q.poll())) {
+                if(--inDeg[next] == 0){
+                    q.offer(next);
+                    count++;
+                }
+            }
+        }
+        return count == n;
+    }
+}
