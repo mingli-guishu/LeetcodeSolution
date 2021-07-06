@@ -1,0 +1,58 @@
+class Solution {
+    // 433 Medium 最小基因变化 minimum-genetic-mutation
+    // 整体思路：
+    // 用两个set：cur和target分别对应当前序列和目标序列，通过获取cur中的序列进行基因变化，并check本次基因变化是否属于bank，从而使得cur中的序列不断靠近target
+    // 而cur和target是相对而言的
+    final char[] alphas = {'A', 'C', 'G', 'T'};// 每个点位出现的核苷酸的可能性
+    HashSet<String> all;// bank
+    int ans = 0;
+    public int minMutation(String start, String end, String[] bank) {
+        HashSet<String> target = new HashSet<>();
+        HashSet<String> cur = new HashSet<>();
+        all = new HashSet<>();// 存储bank
+        for (String s : bank)
+            all.add(s);
+        if (!all.contains(end))
+            return -1;
+        cur.add(start);
+        target.add(end);
+        bfs(cur, target, 0);
+        return ans;
+    }
+
+    private void bfs(HashSet<String> cur, HashSet<String> target, int times) {
+        // 上一轮的基因序列无论怎么变都不属于bank，也就是没有cur没有再向target靠近的可能了
+        if (cur.size() == 0) {
+            ans = -1;
+            return;
+        }
+        // 减少搜索次数
+        if (cur.size() > target.size())
+            bfs(target, cur, times);
+        else {
+            HashSet<String> next = new HashSet<>();// 也就是下一次递归的cur
+            for (String s : cur) {
+                StringBuilder builder = new StringBuilder(s);
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        // s的每个位置都变化一遍
+                        if (s.charAt(i) == alphas[j])
+                            continue;
+                        builder.setCharAt(i, alphas[j]);
+                        String s1 = builder.toString();
+                        if (target.contains(s1)) {// cur和target找到了交集
+                            ans = times + 1;
+                            return;
+                        }
+                        // 没有交集但合法
+                        if (all.contains(s1))
+                            next.add(s1);
+                    }
+                    // 控制每次只对序列的一个位点改变
+                    builder.setCharAt(i, s.charAt(i));
+                }
+            }
+            bfs(next, target, times + 1);
+        }
+    }
+}
