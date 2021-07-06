@@ -1,0 +1,54 @@
+class Solution {
+    // 51 Hard N皇后 n-queens
+    List<List<String>> ans;
+    StringBuilder builder;
+    int[] position;// 每个Queen的位置，其中省略了行数，只记列数
+    int nums = 0;// 当前场上Queen的数量
+    public List<List<String>> solveNQueens(int n) {
+        builder = new StringBuilder();
+        ans = new ArrayList<List<String>>();
+        position = new int[n];
+        getres(n, 0);
+        return ans;
+    }
+
+    private void getres(int n, int row) {
+        // 终止条件
+        if (row == n) {
+            ans.add(oneans(builder.toString(), n));
+            return;
+        }
+        // 搜索这一行中每一列是否可能
+        for (int i = 0; i < n; i++) {
+            if (!check(row, i)) {// 可以下
+                position[row] = i;// 记录当前的Queen的位置
+                nums++;
+                builder.append(i);
+                getres(n, row + 1);
+                builder.deleteCharAt(row);
+                nums--;// 懒惰删除
+            }
+        }
+    }
+
+    // 判断是否不合法的Queen，true表示有
+    private boolean check(int x, int y) {
+        for (int i = 0; i < nums; i++) {
+            if (y == position[i] || Math.abs(x - i) == Math.abs(y - position[i]))
+                return true;
+        }
+        return false;
+    }
+
+    // 把builder中得到的String的答案转换成需要的list
+    private List<String> oneans(String res, int n) {
+        List<String> cur = new ArrayList<String>();
+        for (int i = 0; i < n; i++) {
+            char[] row = new char[n];
+            Arrays.fill(row, '.');
+            row[res.charAt(i) - '0'] = 'Q';
+            cur.add(new String(row));
+        }
+        return cur;
+    }
+}
