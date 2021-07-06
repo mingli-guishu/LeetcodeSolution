@@ -1,0 +1,37 @@
+class Solution {
+    // 200 Medium 岛屿数量 number-of-islands
+    boolean[][] visited;
+    char[][] grid;
+    int rows;
+    int cols;
+    public int numIslands(char[][] grid) {
+        this.rows = grid.length;
+        this.cols = grid[0].length;
+        this.grid = grid;
+        visited = new boolean[rows][cols];
+        int ans = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == '1' && !visited[i][j]) {
+                    dfs(i, j);
+                    ans++;// 从主程序进入的才++
+                }
+            }
+        }
+        return ans;
+    }
+
+    private void dfs(int x, int y) {
+        // 选择用if来取代终止条件
+        visited[x][y] = true;
+        // 上下左右四个方向递归
+        if (x - 1 >= 0 && !visited[x - 1][y] && grid[x - 1][y] == '1')
+            dfs(x - 1, y);
+        if (x + 1 < rows && !visited[x + 1][y] && grid[x + 1][y] == '1')
+            dfs(x + 1, y);
+        if (y - 1 >= 0 && !visited[x][y - 1] && grid[x][y - 1] == '1')
+            dfs(x, y - 1);
+        if (y + 1 < cols && !visited[x][y + 1] && grid[x][y + 1] == '1')
+            dfs(x, y + 1);
+    }
+}
