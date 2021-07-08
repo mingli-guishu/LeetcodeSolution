@@ -1,0 +1,39 @@
+第三周算法小结
+    1、树与图
+        树：主要讲了两种遍历方式：dfs（前序、中序、后序）和bfs在实战方面的应用。
+            dfs：依靠递归来实现，按照统一的标准（如：左-中-右）进行遍历。类似于走迷宫，约定看见路口都左拐，碰壁后返回上一个路口走中间，最后右边，如此重复必然能不漏的走完。
+            bfs：维护一个队列，每从队列中取出一个节点就把其儿子放入队列，如此重复直到列表为空。优势利用了队列的先进先出，上一层的一定比下一层的先搜索到，形成层状遍历
+            实战：
+            // 589 Easy N叉树的前序遍历 n-ary-tree-preorder-traversal
+            https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/description/
+            // 429 Mediate N叉树的层序遍历 n-ary-tree-level-order-traversal
+            https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/
+            // 297 Hard 二叉树的序列化与反序列化 serialize-and-deserialize-binary-tree
+            https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/
+            // 105 Medium 从前序与中序遍历序列构造二叉树
+            https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+        图：之前一直不太熟悉图论，现在终于清晰了一些
+            包括有向图和无向图（视作双向图）
+            图的存储：邻接矩阵，出边数组，邻接表等
+            图的搜索：dfs或bfs
+                BFS + 入度实现拓扑排序，解决有向图找环或unreachable，参考Leetcode207和Leetcode210
+                DFS + visited[]，并通过形参farther排除往回走的情况，解决无向图找环，参考Leetcode684
+            实战：
+            // 684 Medium 冗余连接 redundant-connection
+            // 并查集或成为更优解法
+            https://leetcode-cn.com/problems/redundant-connection/description/
+            // 210 Medium 课程表Ⅱ course-schedule-ii
+            // 考虑bfs和dfs两种解法
+            https://leetcode-cn.com/problems/course-schedule-ii/
+    2、DFS、BFS
+        把DFS和BFS扩展成广义的搜索方法，结合回溯、剪枝、dp的思路，用于解决所有搜索类的题目。
+        结合题目梳理解题大致方向，选择遍历方式。需要在层上做文章时优先bfs，dfs更清晰更容易理解，把握思路，也不需要维护队列。
+        主要看实战：
+        // 17 Medium 电话号码的字母组合 letter-combinations-of-a-phone-number
+        https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
+        // 51 Hard N皇后 n-queens
+        https://leetcode-cn.com/problems/n-queens/
+        // 433 Medium 最小基因变化 minimum-genetic-mutation
+        https://leetcode-cn.com/problems/minimum-genetic-mutation/
+        // 329 Hard 矩阵中的最长递增路径 longest-increasing-path-in-a-matrix
+        https://leetcode-cn.com/problems/longest-increasing-path-in-a-matrix/
