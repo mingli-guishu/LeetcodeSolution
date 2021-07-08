@@ -1,0 +1,36 @@
+class Solution {
+    // 329 Hard 矩阵中的最长递增路径 longest-increasing-path-in-a-matrix
+    int ans = 0;
+    int rows, cols;
+    int[][] matrix;
+    int[][] visited;// 记录每个位置所能达到的最远路径
+    public int longestIncreasingPath(int[][] matrix) {
+        this.rows = matrix.length;
+        this.cols = matrix[0].length;
+        this.matrix = matrix;
+        visited = new int[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (visited[i][j] == 0)// 如果这个位置之前没有递归过，
+                    dfs(i, j, -1);
+                ans = Math.max(ans, visited[i][j]);
+            }
+        }
+        return ans;
+    }
+
+    private int dfs(int x, int y, int pre) {
+        // 不合法或递减，表示这条路到头了
+        if (x < 0 || x >= rows || y < 0 || y >= cols || matrix[x][y] <= pre)
+            return 0;
+        // 之前已经递归过了，直接返回记录的结果
+        if (visited[x][y] != 0)
+            return visited[x][y];
+        // 得到四个方向的所能走到的最远距离
+        int maxvalue = Math.max(
+            Math.max(dfs(x - 1, y, matrix[x][y]), dfs(x + 1, y, matrix[x][y])),
+            Math.max(dfs(x, y - 1, matrix[x][y]), dfs(x, y + 1, matrix[x][y])));
+        visited[x][y] = maxvalue + 1;// 当前点的最长路径就再maxvalue基础上+1
+        return maxvalue + 1;// 返回的是当前点的value
+    }
+}
