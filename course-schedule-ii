@@ -1,0 +1,41 @@
+class Solution {
+    // 210 Medium 课程表Ⅱ course-schedule-ii
+    // 此题与课程表Ⅰ思路完全相同，不过是返回值不一样
+    int[] inDeg;// 入度
+    List<List<Integer>> graph;
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        // 图的存储
+        graph = new ArrayList<List<Integer>>();
+        inDeg = new int[numCourses];
+        for (int i = 0; i < numCourses; i++)
+            graph.add(new ArrayList<Integer>());
+        for (int i = 0; i < prerequisites.length; i++) {
+            graph.get(prerequisites[i][1]).add(prerequisites[i][0]);
+            inDeg[prerequisites[i][0]]++;
+        }
+        return bfs(numCourses);
+    }
+
+    private int[] bfs(int n) {
+        Queue<Integer> q = new ArrayDeque<Integer>();
+        int[] ans = new int[n];
+        int hasStudied = 0;
+        int index = 0;
+        for (int i = 0; i < n; i++) 
+            if (inDeg[i] == 0) {
+                q.offer(i);
+                ans[index++] = i;
+                hasStudied++;
+            }
+        while (!q.isEmpty()) {
+            for (int next : graph.get(q.poll())) {
+                if (--inDeg[next] == 0) {
+                    q.offer(next);
+                    ans[index++] = next;
+                    hasStudied++;
+                }
+            }
+        }
+        return hasStudied == n ? ans : new int[]{};
+    }
+}
