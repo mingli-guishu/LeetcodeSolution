@@ -1,0 +1,92 @@
+class Solution {
+    // 30 Hard 串联所有单词的子串 substring-with-concatenation-of-all-words
+    // 基本解法
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> ans = new ArrayList<>();
+        HashMap<String, Integer> map = new HashMap<>();// 记录words中单词出现的次数
+        int len = words.length * words[0].length();// 每次需要检索的String的长度
+        int wordlen = words[0].length();// 每wordlen个字母作为一个单词进行比较
+        boolean cancontract = true;// 可以进入比较hashmap的条件
+        boolean canbeans = true;// 可以作为答案的条件
+        for (String st : words) {
+            int v = map.getOrDefault(st, 0);
+            map.put(st, ++v);
+        }
+        for (int i = 0; i + len - 1< s.length(); i++) {
+            String cur = s.substring(i, i + len);// 每次取len长度的String来判断是否为串联串
+            HashMap<String, Integer> curmap = new HashMap<>();// 记录cur中各个单词出现的次数
+            cancontract = true;
+            canbeans = true;
+            for (int j = 0; j < len; j += wordlen) {// 从cur中每wordlen长度拿出来一个单词
+                String oneword = cur.substring(j, j + wordlen);
+                if (!map.containsKey(oneword)) {// 此单词不在words[]中
+                    cancontract = false;// 无法比较map，break回到Line13
+                    break;
+                }
+                int v = curmap.getOrDefault(oneword, 0);
+                curmap.put(oneword, ++v);
+            }
+            // 只有cur中所有单词都合法才能比较map
+            if (cancontract) {
+                // 确认map是否相同
+                for (String key : curmap.keySet()) {
+                    if (!curmap.get(key).equals(map.get(key))){
+                        canbeans = false;
+                        break;// 单词在cur出现次数与words不同，break回到Line13
+                    }
+                }
+                // 只有每个单词出现次数相同才能进入ans
+                if (canbeans)
+                    ans.add(i);
+            }
+        }
+        return ans;
+    }
+    
+    // 优化解法
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> ans = new ArrayList<>();
+        HashMap<String, Integer> map = new HashMap<>();// 记录words中单词出现的次数
+        int len = words.length * words[0].length();// 每次需要检索的String的长度
+        int wordlen = words[0].length();// 每wordlen个字母作为一个单词进行比较
+        boolean canbeans = true;// 可以作为答案的条件
+        for (String st : words)
+            map.put(st, map.getOrDefault(st, 0) + 1);
+        for (int start = 0; start < wordlen; start++) {
+            // 只维护wordlen个map，相当于滑动窗体，每次删去出界的单词，添加新入队的单词，提高效率
+            HashMap<String, Integer> curmap = new HashMap<>();
+            // 因为是滑动窗体，所以不需要单独substring出来一个长串，但需要通过i控制窗口长度
+            for (int i = start; i + len - 1 < s.length(); i += wordlen) {
+                canbeans = true;
+                if (i == start) {// 还没初始化curmap
+                    for (int j = i; j < len; j += wordlen) {// 把单词拆出来放进curmap
+                        String oneword = s.substring(j, j + wordlen);
+                        curmap.put(oneword, curmap.getOrDefault(oneword, 0) + 1);
+                    }
+                } else {
+                    // 先删出界的单词
+                    int v = curmap.get(s.substring(i - wordlen, i));
+                    if (v == 1)
+                        curmap.remove(s.substring(i - wordlen, i));
+                    else
+                        curmap.put(s.substring(i - wordlen, i), --v);
+                    // 添加新入队单词
+                    String oneword = s.substring(i + len - wordlen, i + len);
+                    curmap.put(oneword, curmap.getOrDefault(oneword, 0) + 1);
+                }
+                // 对比map是否相同
+                for (String key : curmap.keySet()) {
+                    if (!curmap.get(key).equals(map.getOrDefault(key, -1))) {
+                        canbeans = false;
+                        break;
+                    }
+                }
+                if (canbeans)
+                    ans.add(i);
+            }
+        }
+        return ans;
+    }
+    
+    // 另外还可以搭配KMP算法进行优化
+}
