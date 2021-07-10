@@ -1,0 +1,91 @@
+class Solution {
+    // 224 Hard 基本计算器 basic-calculator
+    // 这题采用了中缀转后缀+后缀求值的方法，并非最优的解题方法，但使用范围广
+    public int calculate(String s) {
+        String[] tokens = trans(s).split(";");
+        // 后缀求值
+        Deque<Integer> stack = new ArrayDeque<Integer>();
+        for(int i = 0; i < tokens.length; i++) {
+            if(tokens[i].equals("+") || tokens[i].equals("-") ||
+                     tokens[i].equals("*") || tokens[i].equals("/")) {
+                switch(tokens[i]) {
+                    case "+":
+                        stack.push(stack.pop() + stack.pop());
+                        break;
+                    case "*":
+                        stack.push(stack.pop() * stack.pop());
+                        break;
+                    case "-":
+                        int num1 = stack.pop();
+                        stack.push(stack.pop() - num1);
+                        break;
+                    case "/":
+                        int num2 = stack.pop();
+                        stack.push(stack.pop() / num2);
+                }
+            } else {
+                stack.push(Integer.parseInt(tokens[i]));
+            }
+        }
+        return stack.pop();
+    }
+
+    // 中缀转后缀
+    private String trans(String s) {
+        char[] c = s.replace(" ", "").toCharArray();
+        StringBuilder builder = new StringBuilder();
+        Deque<Character> opr_stack = new ArrayDeque<>();
+        int index = 0;
+        while (index < c.length) {
+            // 数字直接输出
+            if (c[index] >= '0' && c[index] <= '9') {
+                int v = 0;
+                do {
+                    v = v * 10 + c[index++] - '0'; 
+                } while (index < c.length && c[index] >= '0' && c[index] <= '9');
+                builder.append(v);
+                builder.append(';');
+            } else { // 符号
+                if (c[index] == '(') {// 左括号直接入栈
+                    opr_stack.push('(');
+                    index++;
+                } else if (c[index] == ')') {// 右括号则弹出所有opr直到左括号也弹出
+                    while (opr_stack.peek() != '(') {
+                        builder.append(opr_stack.pop());
+                        builder.append(';');
+                    }
+                    opr_stack.pop();
+                    index++;
+                } else {
+                    // 通过补0处理开头的+-以及连续符号的问题
+                    if (index == 0 || 
+                            c[index - 1] == '+' || c[index - 1] == '-' || c[index - 1]== '(') {
+                        builder.append(0);
+                        builder.append(';');
+                    }
+                    // 栈顶的优先级高于当前遇到的符号，则弹出栈顶符号直到栈顶优先级更小
+                    while (!opr_stack.isEmpty() && 
+                            priorityValue(opr_stack.peek()) >= priorityValue(c[index])) {
+                        builder.append(opr_stack.pop());
+                        builder.append(';');
+                    }
+                    opr_stack.push(c[index++]);// 当前符号入栈
+                }
+            }
+        }
+        // 处理剩下的opr
+        while (!opr_stack.isEmpty()) {
+            builder.append(opr_stack.pop());
+            builder.append(';');
+        }
+        return builder.toString();
+    }
+
+    private int priorityValue(char c) {
+        if (c == '+' || c == '-')
+            return 1;
+        else
+            // 只有左括号
+            return 0;
+    }
+}
