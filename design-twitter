@@ -1,0 +1,80 @@
+class Twitter {
+    // 355 Medium 设计推特 design-twitter
+    int time = 0;
+    // 记录所有的人以及他们发送的推特(包括推特的id和时间)
+    HashMap<Integer, HashMap<Integer, Integer>> allpeople;
+    // 记录follow之间的关系，自己不会存储自己
+    HashMap<Integer, HashSet<Integer>> followers;
+    /** Initialize your data structure here. */
+    public Twitter() {
+        allpeople = new HashMap<>();
+        followers = new HashMap<>();
+    }
+    
+    /** Compose a new tweet. */
+    public void postTweet(int userId, int tweetId) {
+        HashMap curmap = allpeople.getOrDefault(userId, new HashMap<Integer, Integer>());
+        curmap.put(tweetId, time++);
+        allpeople.put(userId, curmap);
+    }
+    
+    /** Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent. */
+    public List<Integer> getNewsFeed(int userId) {
+        PriorityQueue<TweetInfo> q = new PriorityQueue<>();
+        List<Integer> ans = new ArrayList<>();
+        int num = 0;
+        // 先得到这个人的好友列表
+        HashSet<Integer> curset = followers.get(userId);
+        if (curset != null)
+            for (int friend : curset) {
+                // 从allpeople中得到好友的推特信息
+                HashMap<Integer, Integer> alltweet = allpeople.get(friend);
+                if (alltweet != null)
+                    for (int tweetId : alltweet.keySet()) {
+                        // 把推特一条一条拿出来
+                        q.offer(new TweetInfo(tweetId, alltweet.get(tweetId)));
+                    }
+            }
+        // 还要把自己的推特信息放进去
+        HashMap<Integer, Integer> alltweet = allpeople.get(userId);
+        if (alltweet != null)
+            for (int tweetId : alltweet.keySet()) {
+                // 把推特一条一条拿出来
+                q.offer(new TweetInfo(tweetId, alltweet.get(tweetId)));
+            }
+        while (!q.isEmpty() && num++ < 10)
+            ans.add(q.poll().id);
+        return ans;
+    }
+    
+    /** Follower follows a followee. If the operation is invalid, it should be a no-op. */
+    public void follow(int followerId, int followeeId) {
+        // 前者关注了后者，所以要给前者的list中添加后者
+        HashSet<Integer> curset = followers.getOrDefault(followerId, new HashSet<Integer>());
+        curset.add(followeeId);
+        followers.put(followerId, curset);
+    }
+    
+    /** Follower unfollows a followee. If the operation is invalid, it should be a no-op. */
+    public void unfollow(int followerId, int followeeId) {
+        HashSet<Integer> curset = followers.get(followerId);
+        if (curset != null) {// 之前关注了才能unfollow
+            curset.remove(followeeId);
+            followers.put(followerId, curset);
+        }
+    }
+
+    private class TweetInfo implements Comparable<TweetInfo>{
+        int id;// 推特id
+        int time;
+        public TweetInfo(int id, int time) {
+            this.id = id;
+            this.time = time;
+        }
+        @Override
+        public int compareTo(TweetInfo info) {
+            // 大头堆，时间大的在上
+            return info.time - this.time;
+        }
+    }
+}
