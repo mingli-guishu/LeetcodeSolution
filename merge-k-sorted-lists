@@ -1,0 +1,37 @@
+class Solution {
+    // 23 Hard 合并K个升序链表 merge-k-sorted-lists
+    // 之前实现过分治递归写法，此次是二叉堆解法
+    public ListNode mergeKLists(ListNode[] lists) {
+        PriorityQueue<Buffle> q = new PriorityQueue<>();
+        ListNode head = new ListNode(0);
+        ListNode cur = head;
+        for (ListNode node : lists) {
+            if (node != null)
+                q.add(new Buffle(node.val, node));
+        }
+        while (!q.isEmpty()) {
+            Buffle b = q.poll();
+            ListNode node = new ListNode(b.val);
+            cur.next = node;
+            cur = cur.next;
+            if (b.node.next != null)
+            q.add(new Buffle(b.node.next.val, b.node.next));
+        }
+        return head.next;
+    }
+
+    private class Buffle implements Comparable<Buffle>{
+        int val;
+        ListNode node;
+        public Buffle(int val, ListNode node) {
+            this.val = val;
+            this.node = node;
+        }
+
+        @Override
+        public int compareTo(Buffle b) {
+            // 小头堆
+            return this.val - b.val;
+        }
+    }
+}
