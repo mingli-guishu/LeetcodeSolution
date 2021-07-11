@@ -1,0 +1,21 @@
+class Solution {
+    // 538 Medium 把二叉搜索树转换成累加树 convert-bst-to-greater-tree
+    int addition = 0;
+    public TreeNode convertBST(TreeNode root) {
+        trans(root);
+        return root;
+    }
+
+    private void trans(TreeNode root) {
+        if (root == null)
+            return;
+        if (addition == 0 && root.left == null && root.right == null) {
+            addition = root.val;
+            return;
+        }
+        trans(root.right);
+        root.val += addition;
+        addition = root.val;
+        trans(root.left);
+    }
+}
