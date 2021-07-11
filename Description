@@ -1,7 +1,5 @@
 # LeetcodeSolution
 The solutions for Leetcode 
-# LeetcodeSolution
-The solutions for Leetcode 
     第八课：
         二分模板：
             int left = 0, right = n - 1;
