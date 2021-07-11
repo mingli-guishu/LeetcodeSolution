@@ -1,0 +1,19 @@
+class Solution {
+    // 153 Medium 寻找旋转排序数组中的最小值 find-minimum-in-rotated-sorted-array
+    public int findMin(int[] nums) {
+        // 找到第一个<=末尾的数
+        // 虽然数组不严格单调递增，但可以依据题目来分
+        // 官方题解比较清晰
+            // 如果nums[mid]小于nums[r]，那ans一定在mid的位置或mid的左侧，则可以舍弃右半边的数r = mid
+            // 如果nums[mid]大于nums[r]，那ans一定在mid的右侧，则可以舍弃左半边l = mid + 1
+        int l = 0, r = nums.length - 1;
+        while (l < r) {
+            int mid = (l + r) >> 1;
+            if (nums[mid] <= nums[r])
+                r = mid;
+            else
+                l = mid + 1;// 因为大于nums[r]的一定不会是ans所以+1
+        }
+        return nums[r];
+    }
+}
