@@ -1,0 +1,34 @@
+class Solution {
+    // 239 Hard 滑动窗口最大值 sliding-window-maximum
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        PriorityQueue<Wrap> q = new PriorityQueue<>(new Comparator<Wrap>() {
+            @Override
+            public int compare(Wrap a, Wrap b) {
+                // 大头堆
+                return b.val - a.val;
+            }
+        });
+        int[] ans = new int[nums.length - k + 1];
+        int index = 0;
+        for (int i = 0; i < k; i++)
+            q.offer(new Wrap(nums[i], i));
+        ans[index++] = q.peek().val;
+        for (int i = k; i < nums.length; i++) {
+            q.offer(new Wrap(nums[i], i));
+            // 懒惰删除，当一个val成为最大值才检查越界情况
+            while (q.peek().po <= i - k)
+                q.poll();
+            ans[index++] = q.peek().val;
+        }
+        return ans;
+    }
+
+    private class Wrap {
+        int val;
+        int po;
+        public Wrap(int val, int po) {
+            this.val = val;
+            this.po = po;
+        }
+    }
+}
