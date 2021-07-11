@@ -1,0 +1,33 @@
+class Solution {
+    // 2077(面试题04.06.) Medium 后继者 successor-lcci
+    // 前驱：BST中小于val的最大节点
+    // 后继：BST中大于val的最小节点
+    TreeNode ans = null;
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        TreeNode target = find(root, p);
+        if (target.right != null)
+            return findNext(target.right);
+        else
+            return ans;
+    }
+
+    // 在树中找到p
+    private TreeNode find(TreeNode root, TreeNode p) {
+        // 终止条件
+        if (root.val == p.val)
+            return root;
+        // 方法体
+        if (root.val > p.val) {
+            ans = root;
+            return find(root.left, p);
+        } else
+            return find(root.right, p);
+    }
+
+    // 找到后驱
+    private TreeNode findNext(TreeNode target) {
+        if (target.left == null)
+            return target;
+        return findNext(target.left);
+    }
+}
