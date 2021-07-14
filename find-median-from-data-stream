@@ -1,0 +1,51 @@
+class MedianFinder {
+    // 295 Hard 数据流的中位数 find-median-from-data-stream
+    // 维护两个二叉堆，一个大头堆，一个小头堆，中位数就是两个堆头的平均数或两堆头的其中一个
+    PriorityQueue<Integer> max_q;
+    PriorityQueue<Integer> min_q;
+    int size_maxq, size_minq;
+    /** initialize your data structure here. */
+    public MedianFinder() {
+        size_maxq = 0;
+        size_minq = 0;
+        // Java默认小堆
+        max_q = new PriorityQueue<Integer>(Comparator.reverseOrder());
+        min_q = new PriorityQueue<Integer>();
+    }
+    
+    public void addNum(int num) {
+        if (size_maxq == 0) {// 此时两个堆都空
+            max_q.offer(num);
+            size_maxq++;
+            return;
+        }
+        // 先找到位置插入
+        if (num <= max_q.peek()) {
+            max_q.offer(num);
+            size_maxq++;
+        } else {
+            min_q.offer(num);
+            size_minq++;
+        }
+        // 再调整两个堆的平衡
+        if (Math.abs(size_maxq - size_minq) > 1) {
+            if (size_maxq > size_minq) {
+                min_q.offer(max_q.poll());
+                size_maxq--;
+                size_minq++;
+            } else {
+                max_q.offer(min_q.poll());
+                size_maxq++;
+                size_minq--;
+            }
+        }
+    }
+    
+    public double findMedian() {
+        if ((size_maxq + size_minq) % 2 == 1) {
+            return size_maxq > size_minq ? (double) max_q.peek() : (double) min_q.peek();
+        } else {
+            return (double) (max_q.peek() + min_q.peek()) / 2.0;
+        }
+    }
+}
