@@ -1,0 +1,29 @@
+class Solution {
+    // 74 Medium 搜索二维矩阵 search-a-2d-matrix
+    int rows;
+    int cols;
+    public boolean searchMatrix(int[][] matrix, int target) {
+        // 把二维想象成一维
+        this.rows = matrix.length;
+        this.cols = matrix[0].length;
+        int l = 0, r = rows * cols - 1;
+        while (l <= r) {
+            int mid = (l + r) >> 1;
+            if (matrix[getRow(mid)][getCol(mid)] == target)
+                return true;
+            if (matrix[getRow(mid)][getCol(mid)] > target)
+                r = mid - 1;
+            else
+                l = mid + 1;
+        }
+        return false;
+    }
+
+    private int getRow(int v) {
+        return v / cols;
+    }
+
+    private int getCol(int v) {
+        return v % cols;
+    }
+}
