@@ -1,0 +1,39 @@
+class Solution {
+    // 1482 Medium 制作m束花所需的最少天数 minimum-number-of-days-to-make-m-bouquets 
+    int[] bloomDay;
+    public int minDays(int[] bloomDay, int m, int k) {
+        // 思路同410，二分答案法，猜测第T能收到制作多少束花
+        int len = bloomDay.length;
+        if (m * k > len)
+            return -1;
+        this.bloomDay = bloomDay;
+        int l = 1, r = 1000000001;// l,r表示天数
+        while (l < r) {
+            int mid = (l + r) / 2;// 第mid天能制作多少花束？
+            if (isValid(mid, m, k, len))
+                r = mid;
+            else
+                l = mid + 1;
+        }
+        if (r == 1000000001)
+            r = -1;
+        return r;
+    }
+
+    private boolean isValid(int T, int m, int k, int len) {
+        int nums_bouquet = 0;// 在这一天能制作多少花束
+        int count = 0;// 花园中有多少连续的花
+        for (int i = 0; i < len; i++) {
+            if (bloomDay[i] <= T) {
+                if (++count == k) {
+                    if (++nums_bouquet == m)
+                        return true;
+                    count = 0;
+                }
+            } else {
+                count = 0;
+            }
+        }
+        return false;
+    }
+}
