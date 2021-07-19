@@ -1,0 +1,157 @@
+class Solution {
+    // 912 Medium 排序数组 sort-an-array
+    // 本题用以练习所有排序方法
+    // 堆排序：42ms 47.7MB
+    public int[] sortArray(int[] nums) {
+        PriorityQueue<Integer> q = new PriorityQueue<>();
+        for (int i : nums)
+            q.offer(i);
+        for (int i = 0; i < nums.length; i++)
+            nums[i] = q.poll();
+        return nums;
+    }
+    
+    // 计数排序：3ms 48.2MB
+    public int[] sortArray(int[] nums) {
+        // 计数排序
+        int[] count = new int[100001];
+        int index = 0;
+        for (int i : nums)
+            count[i + 50000]++;
+        for (int i = 0; i < 100000; i++) {
+            while (count[i]-- != 0)
+                nums[index++] = i - 50000;
+        }
+        return nums;
+    }
+    
+    // 快排，左右指针法，交换前中后三个数的值防止越界，后置pivot：10ms 47.2MB
+    int[] nums;
+    public int[] sortArray(int[] nums) {
+        this.nums = nums;
+        quickSort(0, nums.length - 1);
+        return this.nums;
+    }
+
+    private void quickSort(int l, int r) {
+        if (l >= r)
+            return;
+        if (r - l == 1) {
+            if (nums[l] > nums[r])
+                swap(l, r);
+            return;
+        }
+        int pivot = partition(l, r);
+        quickSort(l, pivot - 1);
+        quickSort(pivot + 1, r);
+    }
+
+    private int partition(int l, int r) {
+        int pivot = (l + r) / 2;
+        // 让l,mid,r按照大小排序
+        if (nums[l] > nums[pivot])
+            swap(l, pivot);
+        if (nums[pivot] > nums[r])
+            swap(pivot, r);
+        if (nums[l] > nums[pivot])
+            swap(l++, pivot);
+        swap(pivot, --r);// 后置pivot
+        pivot = r--;
+        while (l <= r) {
+            while (l <= pivot && nums[l] < nums[pivot])
+                l++;
+            while (r >= 0 && nums[r] > nums[pivot])
+                r--;
+            if (nums[l] == nums[r]) {
+                l++;
+                r--;
+                continue;
+            }
+            if (l < r)
+                swap(l, r);
+        }
+        swap(pivot, l);
+        return l;
+    }
+
+    private void swap(int a, int b) {
+        int tmp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = tmp;
+    }
+    
+    // 快排，左右指针法：8ms 47.1MB
+    int[] nums;
+    public int[] sortArray(int[] nums) {
+        this.nums = nums;
+        quickSort(0, nums.length - 1);
+        return this.nums;
+    }
+
+    private void quickSort(int l, int r) {
+        if (l >= r)
+            return;
+        int pivot = partition(l, r);
+        quickSort(l, pivot - 1);
+        quickSort(pivot + 1, r);
+    }
+
+    private int partition(int l, int r) {
+        int pivotVal = nums[(l + r) / 2];
+        while (l < r) {
+            while (nums[l] < pivotVal)
+                l++;
+            while (nums[r] > pivotVal)
+                r--;
+            if (nums[l] == nums[r]) {
+                r--;
+                continue;
+            }
+            if (l < r)
+                swap(l, r);
+        }
+        return l;
+    }
+
+    private void swap(int a, int b) {
+        int tmp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = tmp;
+    }
+    
+    // 快排，挖坑法：1289ms 51MB
+    int[] nums;
+    public int[] sortArray(int[] nums) {
+        this.nums = nums;
+        quickSort(0, nums.length - 1);
+        return this.nums;
+    }
+
+    private void quickSort(int l, int r) {
+        if (l >= r)
+            return;
+        int pivot = partition(l, r);
+        quickSort(l, pivot - 1);
+        quickSort(pivot + 1, r);
+    }
+
+    private int partition(int l, int r) {
+        int pivotVal = nums[r];
+        while (l < r) {
+            while (l < r && nums[l] <= pivotVal)
+                l++;
+            nums[r] = nums[l];
+            while (l < r && nums[r] >= pivotVal)
+                r--;
+            nums[l] = nums[r];
+        }
+        nums[l] = pivotVal;
+        return l;
+    }
+
+    private void swap(int a, int b) {
+        int tmp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = tmp;
+    }
+}
