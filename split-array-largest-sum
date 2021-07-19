@@ -1,0 +1,44 @@
+class Solution {
+    // 410 Hard 分割数组的最大值 split-array-largest-sum
+    /* 
+     * 思路:
+     * 贪心算法，利用二分法猜一个数T
+     * T作为分组依据，sum(nums[i]~nums[j]) <= T为一个分组，也就是数组中的数每满T就分组
+     * 对于T来说存在一个最小值使得任意大于T的数都能成功分组
+     * 直到卡到最小的T为止返回
+     * 二分法下界是每个数分一个组，上界是所有数都在同一组
+     */
+    int[] nums;
+    public int splitArray(int[] nums, int m) {
+        this.nums = nums;
+        int len = nums.length;
+        int l = 0, r = 0;// l是下界，r是上界
+        for (int i = 0; i < len; i++) {
+            l = Math.max(nums[i], l);
+            r += nums[i];
+        }
+        while (l < r) {
+            int mid = (l + r) / 2;
+            if (isValid(m, mid, len))
+                r = mid;
+            else
+                l = mid + 1;
+        }
+        return r;
+    }
+
+    private boolean isValid(int m, int T, int len) {
+        int nums_group = 0;// 组数
+        int sumEveryGroup = 0;// 每一组数的和
+        for (int i = 0; i < len; i++) {
+            if (sumEveryGroup + nums[i] <= T) {
+                sumEveryGroup += nums[i];
+            } else {
+                nums_group++;
+                i--;
+                sumEveryGroup = 0;
+            }
+        }
+        return ++nums_group <= m;
+    }
+}
