@@ -1,2 +1,33 @@
 第四周算法小结
+    一、二叉堆、二叉搜索树
+        二叉堆：在Java的堆默认是小根堆，可以通过这条语句变成大根堆 PriorityQueue<Object> q = new PriorityQueue<Object>(Comparator.reverseOrder());
+                    另外，二叉堆不支持查找元素，所以只能删除堆顶的元素
+                二叉堆不是堆的最优实现，斐波拉契堆才是。另外堆还有其他应用：左式堆，d-堆，斜堆，二项队列。
+                二叉堆实战：
+                    // 23 Hard 合并K个升序链表 merge-k-sorted-lists
+                    // 在SecondWeek-Homework中用分治实现过
+                    https://leetcode-cn.com/problems/merge-k-sorted-lists/
+                    // 239 Hard 滑动窗口最大值 sliding-window-maximum
+                    // FirstWeek-Homework中用滑动窗口实现过
+                    https://leetcode-cn.com/problems/sliding-window-maximum/
+                    // 295 Hard 数据流的中位数 find-median-from-data-stream
+                    https://leetcode-cn.com/problems/find-median-from-data-stream/
+        BST：前驱：中序遍历后，该数的前一个数，即搜索树中第一个小于该数的数，也就是求该数所在节点的左子树的最右节点
+             后驱：中序遍历后，该数的前一个数，即搜索树中第一个大于该数的数，也就是求该数所在节点的右子树的最左节点
+             删除：1)若无儿子，直接删除
+                   2)若有一个儿子，直接父节点而子节点连接
+                   3)若有两个儿子，求前驱或后驱进行替换，并删除前驱或获取节点
+             BST实战：
+                // 450 Medium 删除二叉搜索树中的节点 delete-node-in-a-bst
+                https://leetcode-cn.com/problems/delete-node-in-a-bst/
+                // 2079(面试题 04.06) Medium 后继者 successor-lcci
+                https://leetcode-cn.com/problems/successor-lcci/
+    二、二分、二分答案、三分
+        二分：除了常规二分，还有lower_bound和upper_bound
+            二分实战：
+                // 34 Medium 在排序数组中查找元素的第一个和最后一个位置 find-first-and-last-position-of-element-in-sorted-array
+                https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+                // 69 Easy x的平方根 sqrtx
+                https://leetcode-cn.com/problems/sqrtx/
+                // 153 Medium 寻找旋转排
     
