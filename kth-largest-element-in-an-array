@@ -1,8 +1,8 @@
 class Solution {
     // 215 Medium 数组中的第K个最大元素 kth-largest-element-in-an-array
+    // 方法一：分侧快排O(N)
     int[] nums;
     public int findKthLargest(int[] nums, int k) {
-        // 分侧快排O(N)
         this.nums = nums;
         return quickSort(0, nums.length - 1, nums.length - k);
     }
@@ -40,5 +40,36 @@ class Solution {
         int tmp = nums[a];
         nums[a] = nums[b];
         nums[b] = tmp;
+    }
+    
+    // 方法二：维护一个长为K的数组
+    int[] bucket;
+    int index = -1;
+    public int findKthLargest(int[] nums, int k) {
+        bucket = new int[k];
+        for (int num : nums)
+            insert(num, k);
+        return bucket[k - 1];
+    }
+
+    private void insert(int val, int k) {
+        if (index == -1) {
+            bucket[++index] = val;
+        } else if (index < k - 1) {
+            int i = index;
+            while (i >= 0 && val > bucket[i]) {
+                bucket[i + 1] = bucket[i];
+                i--;
+            }
+            bucket[i + 1] = val;
+            index++;
+        } else if (index == k - 1 && val > bucket[index]){
+            int i = index - 1;
+            while (i >= 0 && val > bucket[i]) {
+                bucket[i + 1] = bucket[i];
+                i--;
+            }
+            bucket[i + 1] = val;
+        } 
     }
 }
