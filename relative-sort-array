@@ -1,0 +1,20 @@
+class Solution {
+    // 1122 Easy 数组的相对排序 relative-sort-array
+    public int[] relativeSortArray(int[] arr1, int[] arr2) {
+        // 计数排序
+        int[] count = new int[1001];
+        int index = 0;
+        // 记录每个数出现的次数
+        for (int i = 0; i < arr1.length; i++)
+            count[arr1[i]]++;
+        // 按照arr2出现的顺序摆放
+        for (int i = 0; i < arr2.length; i++)
+            while (count[arr2[i]]-- > 0)
+                arr1[index++] = arr2[i];
+        // 最后扫描count中剩下的数字升序
+        for (int i = 0; i < 1001; i++)
+            while (count[i]-- > 0)
+                arr1[index++] = i;
+        return arr1;
+    }
+}
