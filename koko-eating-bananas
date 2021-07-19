@@ -1,0 +1,25 @@
+class Solution {
+    // 875 Medium 爱吃香蕉的珂珂 koko-eating-bananas
+    int[] piles;
+    public int minEatingSpeed(int[] piles, int h) {
+        // 贪心 + 二分答案
+        this.piles = piles;
+        int len = piles.length;
+        int l = 1, r = 1000000000;
+        while (l < r) {
+            int mid = (l + r) / 2;
+            if (isValid(mid, h, len))
+                r = mid;
+            else
+                l = mid + 1; 
+        }
+        return l;
+    }
+
+    private boolean isValid(int T, int h, int len) {// T作为当前吃的速度
+        int cur_h = 0;
+        for (int i = 0; i < len; i++)
+            cur_h += (piles[i] - 1) / T + 1;
+        return cur_h <= h;
+    }
+}
