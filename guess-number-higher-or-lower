@@ -1,0 +1,15 @@
+public class Solution extends GuessGame {
+    // 374 Easy 猜数字大小 guess-number-higher-or-lower
+    public int guessNumber(int n) {
+        int l = 1, r = n;
+        // 二分寻找第一个<=target的值
+        while (l < r) {
+            int mid = l + (r - l) / 2;// 写成(r + l) / 2会越int界
+            if (guess(mid) <= 0)
+                r = mid;
+            else
+                l = mid + 1;
+        }
+        return l;
+    }
+}
