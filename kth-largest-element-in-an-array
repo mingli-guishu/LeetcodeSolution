@@ -1,0 +1,44 @@
+class Solution {
+    // 215 Medium 数组中的第K个最大元素 kth-largest-element-in-an-array
+    int[] nums;
+    public int findKthLargest(int[] nums, int k) {
+        // 分侧快排O(N)
+        this.nums = nums;
+        return quickSort(0, nums.length - 1, nums.length - k);
+    }
+
+    private int quickSort(int l, int r, int target) {
+        if (l == r) 
+            return nums[l];
+        int pivot = partition(l, r);
+        if (pivot == target)
+            return nums[pivot];
+        if (pivot < target)
+            return quickSort(pivot + 1, r, target);
+        else
+            return quickSort(l, pivot - 1, target);
+    }
+
+    private int partition(int l, int r) {
+        int pivotVal = nums[(l + r) / 2];
+        while (l < r) {
+            while (nums[l] < pivotVal)
+                l++;
+            while (nums[r] > pivotVal)
+                r--;
+            if (nums[l] == nums[r]) {
+                r--;
+                continue;
+            }
+            if (l < r)
+                swap(l, r);
+        }
+        return l;
+    }
+
+    private void swap(int a, int b) {
+        int tmp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = tmp;
+    }
+}
