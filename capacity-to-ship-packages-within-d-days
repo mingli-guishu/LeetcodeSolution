@@ -28,10 +28,11 @@ class Solution {
                 sumWeight += weights[i];
             } else {
                 d++;
-                i--;
+                i--;// 防止漏过当前的weight
                 sumWeight = 0;
             }
         }
+        // ++d是加上最后一天
         return ++d <= days;
     }
 }
