@@ -1,0 +1,37 @@
+class Solution {
+    // 1011 Medium 在D天内送达包裹的能力 capacity-to-ship-packages-within-d-days
+    int[] weights;
+    public int shipWithinDays(int[] weights, int days) {
+        // 二分答案
+        this.weights = weights;
+        int len = weights.length;
+        int l = 0, r = 0;
+        for (int i = 0; i < len; i++) {
+            l = Math.max(l, weights[i]);// 下界，每个weight装一次
+            r += weights[i];// 上界，只需要装一次
+        }
+        while (l < r) {
+            int mid = (l + r) / 2;
+            if (isValid(mid, days, len))
+                r = mid;
+            else
+                l = mid + 1;
+        }
+        return l;
+    }
+
+    private boolean isValid(int T, int days, int len) {
+        int sumWeight = 0;// 每天不超过T的最大转载重量
+        int d = 0;
+        for (int i = 0; i < len; i++) {
+            if (sumWeight + weights[i] <= T) {
+                sumWeight += weights[i];
+            } else {
+                d++;
+                i--;
+                sumWeight = 0;
+            }
+        }
+        return ++d <= days;
+    }
+}
