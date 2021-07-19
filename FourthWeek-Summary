@@ -29,5 +29,19 @@
                 https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
                 // 69 Easy x的平方根 sqrtx
                 https://leetcode-cn.com/problems/sqrtx/
-                // 153 Medium 寻找旋转排
-    
+                // 153 Medium 寻找旋转排序数组中的最小值 find-minimum-in-rotated-sorted-array
+                https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array/
+        三分：严格单调，通过卡位置寻找极大值或极小值
+            三分实战：
+                // 162 Medium 寻找峰值 find-peak-element
+                https://leetcode-cn.com/problems/find-peak-element/
+        二分答案：将寻找最优问题转化成二分查找+合法判断。并且解空间是0-1分段，也就是最优解的一侧全部不合法，另一侧合法但不最优，通过二分找出最优解
+            二分答案实战： 
+                // 410 Hard 分割数组的最大值 split-array-largest-sum
+                https://leetcode-cn.com/problems/split-array-largest-sum/
+                // 1482 Medium 制作m束花所需的最少天数 minimum-number-of-days-to-make-m-bouquets
+                https://leetcode-cn.com/problems/minimum-number-of-days-to-make-m-bouquets/
+                // 1011 Medium 在D天内送达包裹的能力 capacity-to-ship-packages-within-d-days
+                https://leetcode-cn.com/problems/capacity-to-ship-packages-within-d-days/
+                // 875 Medium 爱吃香蕉的珂珂 koko-eating-bananas
+                https://leetcode-cn.com/problems/koko-eating-bananas/
