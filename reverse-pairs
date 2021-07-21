@@ -1,0 +1,52 @@
+class Solution {
+    // 493 Hard 翻转对 reverse-pairs
+    /*
+     * 思路：
+     * 对于一个数组求其翻转对，等价于把当前数组A分成已经排序的A1和A2两个数组
+     * 那么ans(A) = ans(A1) + ans(A2) + ans(A1+A2)
+     * ans(A1+A2):由于A1中的数index(A1) < index(A2)，只需要val(A1) > val(A2) * 2即可
+     */
+    int[] nums;
+    public int reversePairs(int[] nums) {
+        // 归并
+        this.nums = nums;
+        return merge(0, nums.length - 1);
+    }
+
+    private int getA1A2ans(int start, int mid, int end) {
+        // i表示数组A1头，j表示A2头
+        int i = start, j = mid + 1;
+        int res = 0;
+        while (i < mid + 1 && j <= end) {
+            while (i < mid + 1 && nums[i] <= (long)nums[j] * 2)
+                i++;
+            if (i == mid + 1)
+                break;
+            res += mid - i + 1;
+            j++;
+        }
+        return res;
+    }
+
+    private int merge(int start, int end) {
+        if (start >= end)
+            return 0;
+        int mid = (start + end) / 2;
+        int ans = merge(start, mid) + merge(mid + 1, end) + getA1A2ans(start, mid, end);
+        
+        // 归并
+        int[] tmp = new int[end - start + 1]; 
+        int i = start, j = mid + 1;
+        int k = 0;
+        while (i < mid + 1 || j <= end) {
+            if (j > end || (i < mid + 1 && nums[i] <= nums[j]))
+                tmp[k++] = nums[i++];
+            else
+                tmp[k++] = nums[j++];
+        }
+        // make a copy
+        while (--k >= 0)
+            nums[--j] = tmp[k];
+        return ans;
+    }
+}
