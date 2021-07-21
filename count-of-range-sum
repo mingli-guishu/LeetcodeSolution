@@ -1,0 +1,58 @@
+class Solution {
+    // 327 Hard 区间和的个数 count-of-range-sum
+    long[] s;
+    int lower;
+    int upper;
+    public int countRangeSum(int[] nums, int lower, int upper) {
+        // 归并 + 前缀和
+        this.lower = lower;
+        this.upper = upper;
+        s = new long[nums.length + 1];
+        for (int i = 1; i < s.length; i++) 
+            s[i] = (long)nums[i - 1] + s[i - 1];
+        // for (int i = 0; i < s.length; i++)  
+        //     System.out.print("初始:s[" + i + "] = " + s[i] + " ");
+        // System.out.println();
+        return merge(0, s.length - 1);// 从0开始，否则第一个数字会被忽略
+    }
+
+    private int merge(int l, int r) {
+        if (l >= r)
+            return 0;
+        int mid = (l + r) / 2; 
+        int ans = merge(l, mid) + merge(mid + 1, r) + getans(l, mid, r);
+
+        // 归并
+        long[] tmp = new long[r - l + 1];
+        int k = 0;
+        int i = l, j = mid + 1;
+        while (i < mid + 1 || j <= r) {
+            if (j > r || (i < mid + 1 && s[i] <= s[j]))
+                tmp[k++] = s[i++];
+            else
+                tmp[k++] = s[j++];
+        }
+        // make a copy
+        while (--k >= 0)
+            s[--j] = tmp[k];
+        // for (int ii = 0; ii < s.length; ii++)  
+        //     System.out.print("s[" + ii + "] = " + s[ii] + " ");
+        // System.out.println();
+        return ans;
+    }
+
+    // 得到跨两个升序数组区间的答案
+    private int getans(int l, int mid, int r) {
+        int res = 0;
+        int i = mid + 1, j = mid + 1;
+        for (int m = l; m < mid + 1; m++) {
+            while (i <= r && s[i] - s[m] < lower)
+                i++;
+            while (j <= r && s[j] - s[m] <= upper)
+                j++;
+            res += j - i;
+        }
+        // System.out.println("ans = " + res);
+        return res;
+    }
+}
