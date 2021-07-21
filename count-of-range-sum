@@ -10,9 +10,6 @@ class Solution {
         s = new long[nums.length + 1];
         for (int i = 1; i < s.length; i++) 
             s[i] = (long)nums[i - 1] + s[i - 1];
-        // for (int i = 0; i < s.length; i++)  
-        //     System.out.print("初始:s[" + i + "] = " + s[i] + " ");
-        // System.out.println();
         return merge(0, s.length - 1);// 从0开始，否则第一个数字会被忽略
     }
 
@@ -35,9 +32,6 @@ class Solution {
         // make a copy
         while (--k >= 0)
             s[--j] = tmp[k];
-        // for (int ii = 0; ii < s.length; ii++)  
-        //     System.out.print("s[" + ii + "] = " + s[ii] + " ");
-        // System.out.println();
         return ans;
     }
 
@@ -52,7 +46,8 @@ class Solution {
                 j++;
             res += j - i;
         }
-        // System.out.println("ans = " + res);
         return res;
     }
+    
+    // 此外还有线段树的做法
 }
