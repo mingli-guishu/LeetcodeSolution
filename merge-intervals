@@ -1,0 +1,33 @@
+class Solution {
+    // 56 Medium 合并区间 merge-intervals
+    public int[][] merge(int[][] intervals) {
+        // 两个数组记录连续区间和点区间
+        int[] rage = new int[10001];
+        int[] addition = new int[10001];
+        List<int[]> list = new ArrayList<>();
+        int nums = 0;// nums > 0表示当前区间有被覆盖
+        int start = -1;// 当前被覆盖区间的开头，若当前区间没有被覆盖则为-1
+        for (int i = 0; i < intervals.length; i++) {
+            if (intervals[i][0] == intervals[i][1])
+                addition[intervals[i][0]]++;
+            rage[intervals[i][0]]++;// 开始
+            rage[intervals[i][1]]--;// 停下
+        }
+        for (int i = 0; i < 10001; i++) {
+            // 记录没有被连续区间覆盖的点区间
+            if (addition[i] != 0 && nums == 0 && rage[i] == 0)
+                list.add(new int[]{i, i});
+            if (rage[i] != 0) {
+                if (nums == 0)
+                    start = i;
+                nums += rage[i];
+                if (nums == 0)
+                    list.add(new int[]{start, i});
+            }
+        }
+        int[][] ans = new int[list.size()][2];
+        for (int i = 0; i < ans.length; i++)
+            ans[i] = list.get(i);
+        return ans;
+    }
+}
