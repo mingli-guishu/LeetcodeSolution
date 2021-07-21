@@ -1,0 +1,27 @@
+class Solution {
+    // 322 Medium 零钱兑换 coin-change
+    int[] coins;
+    int[] count;// 每个余额下需要多少硬币
+    public int coinChange(int[] coins, int amount) {       
+        this.coins = coins;
+        count = new int[amount + 1];
+        return dfs(amount);
+    }
+
+    private int dfs(int rest) {
+        if (rest == 0)
+            return 0;
+        if (rest < 0)
+            return -1;
+        if (count[rest] != 0)
+            return count[rest];
+        int min = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            int cur = dfs(rest - coin);
+            if (cur >= 0 && cur < min) // 找到当前rest下最小的次数
+                min = cur + 1;
+        }
+        count[rest] = min == Integer.MAX_VALUE ? -1 : min; 
+        return count[rest];
+    }
+}
