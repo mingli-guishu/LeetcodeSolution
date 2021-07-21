@@ -1,5 +1,6 @@
 class Solution {
     // 56 Medium 合并区间 merge-intervals
+    // 计数法
     public int[][] merge(int[][] intervals) {
         // 两个数组记录连续区间和点区间
         int[] rage = new int[10001];
@@ -29,5 +30,25 @@ class Solution {
         for (int i = 0; i < ans.length; i++)
             ans[i] = list.get(i);
         return ans;
+    }
+    
+    // 最远覆盖区间法
+    public int[][] merge(int[][] intervals) {
+        List<int[]> ans = new ArrayList<>();
+        // 把intervals排序，使start位置小的排前
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return a[0] - b[0];
+            }
+        });
+        for (int[] interval : intervals) {
+            // 当前要添加的区间超过了当前最远覆盖区间
+            if (ans.size() == 0 || ans.get(ans.size() - 1)[1] < interval[0])
+                ans.add(interval);
+            else
+                // 若没有超过最远覆盖位置，则比较两个区间取最远位置
+                ans.get(ans.size() - 1)[1] = Math.max(ans.get(ans.size() - 1)[1], interval[1]);
+        }
+        return ans.toArray(new int[ans.size()][2]);
     }
 }
