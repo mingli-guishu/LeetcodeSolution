@@ -1,2 +1,39 @@
 第五周算法小结
-    
+    本周的算法并非直接的解题思路，需要结合问题分析
+    1、排序：常见的O(N2):选择，冒泡，插入。O(NlogN)：堆排，快排，归并。非比较类排序：计数。另外还有希尔排序，基数排序等不常见的排序算法
+        对于排序算法，类似于二分。一定要动手！自己抠细节，才能做到bug-free
+        模板练习题：提供充足数据并可以持续练习
+            // 912 Medium 排序数组 sort-an-array
+            https://leetcode-cn.com/problems/sort-an-array/
+        快排实战：
+            // 215 Medium 数组中的第K个最大元素 kth-largest-element-in-an-array
+            https://leetcode-cn.com/problems/kth-largest-element-in-an-array/
+        综合实战：
+            // 1122 Easy 数组的相对排序 relative-sort-array
+            // 自定义sort比较器，计数排序
+            https://leetcode-cn.com/problems/relative-sort-array/
+            // 56 Medium 合并区间 merge-intervals
+            // 自定义sort比较器
+            https://leetcode-cn.com/problems/merge-intervals/
+        归并实战：
+            // 493 Hard 翻转对 reverse-pairs
+            https://leetcode-cn.com/problems/reverse-pairs/
+            // 327 Hard 区间和的个数
+            https://leetcode-cn.com/problems/count-of-range-sum/
+    2、贪心：对每一步做到局部最优并希望全局最优。但不一定对，需要证明贪心的状态空间是否可以覆盖所有状态
+            贪心不是解题的首选方法，可以用dp和搜索等全局方法来解决。
+            贪心不可用实例：
+                // 322 Medium 零钱兑换 coin-change
+                https://leetcode-cn.com/problems/coin-change/
+            实战：
+                // 860 Easy 柠檬水找零 lemonade-change
+                https://leetcode-cn.com/problems/lemonade-change/description/
+                // 455 Easy 分发饼干 assign-cookies
+                https://leetcode-cn.com/problems/assign-cookies/description/
+                // 122 Easy 买卖股票的最佳时机Ⅱ best-time-to-buy-and-sell-stock-ii
+                https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/
+                // 45 Medium 跳跃游戏 jump-game-ii
+                https://leetcode-cn.com/problems/jump-game-ii/
+                // 1665 Hard 完成所有任务的最少初始能量 minimum-initial-energy-to-finish-tasks
+                https://leetcode-cn.com/problems/minimum-initial-energy-to-finish-tasks/
+        
