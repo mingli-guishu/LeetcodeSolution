@@ -1,0 +1,22 @@
+class Solution {
+    // 45 Medium 跳跃游戏Ⅱ jump-game-ii
+    public int jump(int[] nums) {
+        int ans = 0;
+        int index = 0;
+        while (index < nums.length - 1) {
+            int next = 0;
+            int max = 0;// 当前能跳的最远位置
+            for (int i = 1; i <= nums[index]; i++) {
+                if (i + index >= nums.length - 1)// 不用往前看一步，直接可以跳到终点
+                    return ++ans;
+                if (i + nums[i + index] > max) {// 往前看一步能不能跳的更远
+                    max = i + nums[i + index];
+                    next = i;
+                }
+            }
+            index += next;
+            ans++;
+        }
+        return ans;
+    }
+}
