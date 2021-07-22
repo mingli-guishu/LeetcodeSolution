@@ -1,0 +1,25 @@
+class Solution {
+    // 860 Easy 柠檬水找零 lemonade-change
+    public boolean lemonadeChange(int[] bills) {
+        // 贪心
+        int[] changes = new int[2];// 记录5，10分别有几张
+        for (int bill : bills) {
+            if (bill == 5)
+                changes[0]++;
+            else if (bill == 10) {
+                if (changes[0]-- <= 0)
+                    return false;
+                changes[1]++;
+            } else if (bill == 20)
+                if (changes[0] >= 1 && changes[1] >= 1) {
+                    changes[0]--;
+                    changes[1]--;
+                } else if (changes[0] >= 3) {
+                    changes[0] -= 3;
+                } else {
+                    return false;
+                }
+        }
+        return true;
+    }
+}
