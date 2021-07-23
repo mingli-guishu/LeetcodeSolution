@@ -1,0 +1,21 @@
+class Solution {
+    public int jump(int[] nums) {
+        int ans = 0;
+        int index = 0;
+        while (index < nums.length - 1) {
+            int next = 0;// 局部最优选择
+            int max = 0;// 当前能跳的最远位置
+            for (int i = 1; i <= nums[index]; i++) {
+                if (i + index >= nums.length - 1)
+                    return ++ans;
+                if (i + nums[i + index] > max) {
+                    max = i + nums[i + index];
+                    next = i;
+                }
+            }
+            index += next;
+            ans++;
+        }
+        return ans;
+    }
+}
