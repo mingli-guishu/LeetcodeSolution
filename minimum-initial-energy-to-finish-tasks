@@ -1,0 +1,16 @@
+class Solution {
+    // 1665 Hard 完成所有任务的最少初始能量 minimum-initial-energy-to-finish-tasks
+    public int minimumEffort(int[][] tasks) {
+        // 通过邻项交换可以证明，actual越小越先做，minimum越大越先做
+        // 按照actual - minimun排序
+        Arrays.sort(tasks, new Comparator<int[]>() {
+            public int compare(int[] taskA, int[] taskB) {
+                return taskA[0] - taskA[1] - (taskB[0] - taskB[1]);
+            }
+        });
+        int ans = 0;
+        for (int i = tasks.length - 1; i >= 0; i--)
+            ans = Math.max(ans + tasks[i][0], tasks[i][1]);
+        return ans;
+    }
+}
