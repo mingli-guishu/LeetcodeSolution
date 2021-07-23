@@ -1,0 +1,28 @@
+class Solution {
+    // 63 Medium 不同路径Ⅱ unique-paths-ii
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        // top-down
+        int row = obstacleGrid.length;
+        int col = obstacleGrid[0].length;
+        int[] dp = new int[col];// 优化后的dp，O(col)空间
+        // 初始化
+        for (int i = 0; i < col; i++)// 第一行
+            if (obstacleGrid[0][i] == 0)
+                dp[i] = 1;
+            else break;
+        for (int i = 1; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (j == 0) {
+                    if (obstacleGrid[i][j] == 1)
+                        dp[j] = 0;
+                } else {
+                    if (obstacleGrid[i][j] == 0)
+                        dp[j] += dp[j - 1];
+                    else
+                        dp[j] = 0;
+                }
+            }
+        }
+        return dp[col - 1];
+    }
+}
