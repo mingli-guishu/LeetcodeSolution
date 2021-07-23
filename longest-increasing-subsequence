@@ -1,0 +1,49 @@
+class Solution {
+    // 300 Medium 最长递增子序列 longest-increasing-subsequence
+    // dp
+    public int lengthOfLIS(int[] nums) {
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 1);
+        int ans = 1;
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j])
+                    dp[i] = Math.max(dp[j] + 1, dp[i]);
+            }
+            ans = Math.max(ans, dp[i]);
+        }
+        return ans;
+    }
+    
+    // 贪心 + 二分：为了使递增序列更长，我们希望这个序列的数越小越好，于是维护一个数组
+        // 当遇到比序列尾更大的数时直接添加进序列，当遇到比序列尾更小的数字时，就替换掉序列中第一个>=num的数
+    int[] dp;
+    int index = 0;// len = index + 1
+    public int lengthOfLIS(int[] nums) {
+        dp = new int[nums.length];
+        for (int num : nums) {
+            if (index == 0)
+                dp[index++] = num;
+            else {
+                if (num > dp[index - 1])
+                    dp[index++] = num;
+                else
+                    dp[find(num)] = num;
+            }
+        }
+        return index;// 由于index本就是在++位置上就不用+1
+    }
+
+    private int find(int num) {
+        // 二分找到第一个>=num的数
+        int l = 0, r = index - 1;
+        while (l < r) {
+            int mid = (l + r) / 2;
+            if (dp[mid] >= num)
+                r = mid;
+            else
+                l = mid + 1;
+        }
+        return l;
+    }
+}
