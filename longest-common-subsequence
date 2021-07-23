@@ -1,0 +1,26 @@
+class Solution {
+    // 1143 Medium 最长公共子序列 longest-common-subsequence
+    int[] dp;// 优化后的dp，O(len2 + 2)的空间复杂度
+    public int longestCommonSubsequence(String text1, String text2) {
+        int len1 = text1.length();
+        int len2 = text2.length();
+        int last = 0, cur = 0;// 利用cur和last记录dp[i - 1][j - 1]
+        dp = new int[len2];// 一行一行
+        for (int i = 0; i < len1; i++) {
+            for (int j = 0; j < len2; j++) {
+                cur = dp[j];
+                if (text1.charAt(i) == text2.charAt(j)) {// 如果当前位置字母相同，dp[i][j] = dp[i - 1][j - 1] + 1
+                    if (j != 0)
+                        dp[j] = last + 1;
+                    else
+                        dp[j] = 1;
+                } else {// 字母不同，dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1])
+                    if (j != 0)
+                        dp[j] = Math.max(dp[j - 1], dp[j]);
+                }
+                last = cur;
+            }
+        }
+        return dp[len2 - 1];
+    }
+}
