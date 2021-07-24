@@ -1,0 +1,16 @@
+class Solution {
+    // 152 Medium 乘积最大子数组 maximum-product-subarray
+    public int maxProduct(int[] nums) {
+        // dp，维护最大和最小，因为最小的×负数可能变成最大值
+        int max = nums[0], min = nums[0];
+        int ans = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            int cur_max = Math.max(nums[i], Math.max(max * nums[i], min * nums[i]));
+            int cur_min = Math.min(nums[i], Math.min(max * nums[i], min * nums[i]));
+            ans = Math.max(ans, cur_max);
+            max = cur_max;
+            min = cur_min;
+        }
+        return ans;
+    }
+}
