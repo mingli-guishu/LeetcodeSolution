@@ -1,0 +1,40 @@
+class Solution {
+    // 122 Easy 买卖股票的最佳时机Ⅱ best-time-to-buy-and-sell-stock-ii
+    // dp非优化
+    public int maxProfit(int[] prices) {
+        // dp[i][0]表示第i天结束时手上没有股时的最大收益
+        // dp[i][1]表示第i天结束时手上持有股时的最大收益
+        int[][] dp = new int[prices.length][2];
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            // 手上未持有，要么前一天也没持有，要么今天卖了
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+            // 手上持有，要么前一天持有，要么今天买了
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+        }
+        return dp[prices.length - 1][0];
+    }
+    
+    // dp优化
+    public int maxProfit(int[] prices) {
+        int in = -prices[0], out = 0;
+        for (int i = 1; i < prices.length; i++) {
+            int pre_in = in;// 若先计算in会把原来的in覆盖
+            // 手上持有，要么前一天持有，要么今天买了
+            in = Math.max(in, out - prices[i]);
+            // 手上未持有，要么前一天也没持有，要么今天卖了
+            out = Math.max(out, pre_in + prices[i]);
+        }
+        return out;
+    }
+    
+    // 贪心
+    public int maxProfit(int[] prices) {
+        int ans = 0;
+        // 只要是比昨天多，就计入ans，而若连续递增，相当于中间几天又买又卖
+        for (int i = 1; i < prices.length; i++)
+            ans += Math.max(0, prices[i] - prices[i - 1]);
+        return ans;
+    }
+}
