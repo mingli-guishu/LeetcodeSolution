@@ -1,0 +1,19 @@
+class Solution {
+    // 120 Medium 三角形最小路径 triangle
+    public int minimumTotal(List<List<Integer>> triangle) {
+        // 优化后的dp
+        int[] dp = new int[triangle.size()];
+        dp[0] = triangle.get(0).get(0);
+        int ans = Integer.MAX_VALUE;
+        for (int layer = 1; layer < triangle.size(); layer++) {
+            // 从后往前，否则会被覆盖
+            dp[layer] = triangle.get(layer).get(layer) + dp[layer - 1];
+            for (int index = layer - 1; index > 0; index--)
+                dp[index] = Math.min(dp[index - 1], dp[index]) + triangle.get(layer).get(index);
+            dp[0] += triangle.get(layer).get(0);
+        }
+        for (int i = 0; i < dp.length; i++)
+            ans = Math.min(ans, dp[i]);
+        return ans;
+    }
+}
