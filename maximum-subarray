@@ -1,0 +1,15 @@
+class Solution {
+    // 53 Easy 最大子序和 maximum-subarray
+    public int maxSubArray(int[] nums) {
+        // dp形式的贪心
+        int cur = nums[0];
+        int ans = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            cur = Math.max(nums[i], cur + nums[i]);// 要么接上前面，要么自己开始
+            ans = Math.max(ans, cur);
+        }
+        return ans;
+    }
+    
+    // First-Lesson中实现过前缀和解法
+}
