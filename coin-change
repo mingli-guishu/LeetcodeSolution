@@ -1,0 +1,21 @@
+class Solution {
+    // 322 Medium 零钱兑换 coin-change
+    public int coinChange(int[] coins, int amount) {
+        // dp递推法
+        // dp[i] = Math.min(dp[i - coinA] + 1, dp[i - coinB] + 1) ...
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE - 1);
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            for (int coin : coins) {
+                if (i - coin >= 0)
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);// 找到最小数量
+            }
+        }
+        if (dp[amount] == Integer.MAX_VALUE - 1)
+            return -1;
+        return dp[amount];
+    }
+    
+    // 之前实现过记忆化搜索法
+}
