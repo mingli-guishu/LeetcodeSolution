@@ -1,0 +1,60 @@
+class Solution {
+    // 416 Medium 分割等和子集 partition-equal-subset-sum
+    // dp非优化
+    public boolean canPartition(int[] nums) {
+        // 0-1背包
+        int len = nums.length;
+        int sum = 0, max = 0;
+        int target = 0;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(max, num);
+        }
+        if (sum % 2 != 0)
+            return false;
+        target = sum / 2;// 也就是背包大小
+        if (max > target)   
+            return false;
+        // 在前i个数中，能不能选出总和为j的数
+        boolean[][] dp = new boolean[len][target + 1];
+        for (int i = 0; i < len; i++)
+            dp[i][0] = true;   
+        dp[0][nums[0]] = true;   
+        for (int i = 1; i < len; i++) {
+            for (int j = 1; j <= target; j++) {
+                if (j < nums[i])
+                    dp[i][j] = dp[i - 1][j];
+                else
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i]];// 不装 || 装
+            }
+        }
+        return dp[len - 1][target];
+    }
+    
+    // dp优化
+    public boolean canPartition(int[] nums) {
+        int len = nums.length;
+        int sum = 0, max = 0;
+        int target = 0;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(max, num);
+        }
+        if (sum % 2 != 0)
+            return false;
+        target = sum / 2;// 也就是背包大小
+        if (max > target)   
+            return false;
+        // 降为
+        boolean[] dp = new boolean[target + 1];
+        dp[0] = true;   
+        dp[nums[0]] = true;   
+        for (int i = 1; i < len; i++) {
+            for (int j = target; j >= 1; j--) {// 逆序防覆盖
+                if (j >= nums[i])
+                    dp[j] = dp[j] || dp[j - nums[i]];// 不装 || 装
+            }
+        }
+        return dp[target];
+    }
+}
