@@ -1,0 +1,35 @@
+class Solution {
+    // 198 Medium 打家劫舍 house-robber
+    // dp非优化
+    public int rob(int[] nums) {
+        // 看成买卖股票含冷冻期
+        int[][] dp = new int[nums.length][2];
+
+        // 边界
+        dp[0][1] = nums[0];
+        dp[0][0] = 0;
+
+        for (int i = 1; i < nums.length; i++) {
+            // 当前可以偷
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1]);
+            // 当前不能偷，也就是刚偷完
+            dp[i][1] = nums[i] + dp[i - 1][0];
+        }
+        return Math.max(dp[nums.length - 1][0], dp[nums.length - 1][1]);
+    }
+    
+    // dp优化
+    public int rob(int[] nums) {
+        int valid = 0;// 此时可以偷
+        int invalid = nums[0];// 此时刚偷完
+
+        for (int i = 0; i < nums.length; i++) {
+            int pre_valid = valid;
+            // 上一次没偷 或 上一次不能偷
+            valid = Math.max(valid, invalid);
+            // 刚偷完
+            invalid = nums[i] + pre_valid;
+        }
+        return Math.max(valid, invalid);
+    }
+}
