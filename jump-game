@@ -1,0 +1,32 @@
+class Solution {
+    // 55 Medium 跳跃游戏 jump-game
+    // dp
+    public boolean canJump(int[] nums) {
+        int len = nums.length;
+        // dp表示从起点到每个点的最小步数
+        int[] dp = new int[len];
+        Arrays.fill(dp, Integer.MAX_VALUE - 1);
+        dp[0] = 0;
+        for (int i = 1; i < len; i++) {
+            for (int j = 0; j < i; j++) {// i每往前走一步就从头遍历找到"从起点到i的最小步数"
+                if (j + nums[j] >= i)// 可以到达i
+                    dp[i] = Math.min(dp[i], dp[j] + 1);
+            }
+        }
+        return dp[len - 1] == Integer.MAX_VALUE - 1 ? false : true;
+    }
+    
+    // 贪心
+    public boolean canJump(int[] nums) {
+        int len = nums.length;
+        int maxIndex = 0;// 最远位置
+        for (int i = 0 ; i < len; i++) {
+            if (maxIndex >= i) {
+                maxIndex = Math.max(maxIndex, i + nums[i]);
+                if (maxIndex >= len - 1)
+                    return true;
+            }
+        }
+        return false;
+    }
+}
