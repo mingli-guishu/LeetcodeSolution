@@ -1,0 +1,43 @@
+class Solution {
+    // 309 Medium 买卖股票的最佳时机含冷冻期 best-time-to-buy-and-sell-stock-with-cooldown
+    // dp非优化
+    public int maxProfit(int[] prices) {
+        // 模板
+        int len = prices.length;
+        // 分别表示第i天，是否持有，是否在冷冻期内
+        int[][][] dp = new int[prices.length][2][2];
+
+        // 边界
+        dp[0][0][0] = 0;
+        dp[0][1][0] = -prices[0];
+
+        for (int i = 1; i < len; i++) {
+            // 卖出
+            dp[i][0][1] = dp[i - 1][1][0] + prices[i];
+            // 持有
+            dp[i][1][0] = Math.max(dp[i - 1][1][0], dp[i - 1][0][0] - prices[i]);
+            // 剩余状态
+            dp[i][0][0] = Math.max(dp[i - 1][0][0], dp[i - 1][0][1]);
+        }
+        return Math.max(dp[len - 1][0][0], dp[len - 1][0][1]);
+    }
+    
+    // dp优化
+    public int maxProfit(int[] prices) {
+        int len = prices.length;
+        
+        int buy = -prices[0];
+        int sell_frosted = 0;
+        int sell_unfrosted = 0;
+        for(int i = 1; i < len; i++) {
+            int pre_buy = buy;
+            // 持有
+            buy = Math.max(buy, sell_unfrosted - prices[i]);
+            // 未持有且处于解封状态
+            sell_unfrosted = Math.max(sell_frosted, sell_unfrosted);
+            // 未持有且处于冷冻状态
+            sell_frosted = pre_buy + prices[i];
+        }
+        return Math.max(sell_frosted, sell_unfrosted);
+    }
+}
