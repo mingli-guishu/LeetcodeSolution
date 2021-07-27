@@ -1,0 +1,35 @@
+class Solution {
+    // 45 Medium 跳跃游戏Ⅱ jump-game-ii
+    // dp
+    public int jump(int[] nums) {
+        // dp，从起点到每个点的最小步数
+        int len = nums.length;
+        int[] dp = new int[len];
+        Arrays.fill(dp, Integer.MAX_VALUE - 1);
+        dp[0] = 0;// 边界
+        for (int i = 1; i < len; i++) {
+            for (int j = 0; j < i; j++) {
+                if (j + nums[j] >= i)// 从第j个位置可以到i
+                    dp[i] = Math.min(dp[i], dp[j] + 1);
+            }
+        }
+        return dp[len - 1];
+    }
+    
+    // 贪心
+    public int jump(int[] nums) {
+        int step = 0;
+        int end = 0;// 对每一个位置i的最远可达到距离i + nums[i]，若超过了end，step++
+        int maxPo = 0;// 最远位置
+        for (int i = 0; i < nums.length - 1; i++) {
+            maxPo = Math.max(maxPo, i + nums[i]);
+            if (i == end) {
+                step++;
+                end = maxPo;
+                if (end >= nums.length - 1)
+                    return step;
+            }
+        }
+        return step;
+    }
+}
