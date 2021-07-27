@@ -45,7 +45,7 @@ class Solution {
         target = sum / 2;// 也就是背包大小
         if (max > target)   
             return false;
-        // 降为
+        // 降维
         boolean[] dp = new boolean[target + 1];
         dp[0] = true;   
         dp[nums[0]] = true;   
