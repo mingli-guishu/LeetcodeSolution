@@ -1,0 +1,11 @@
+# LeetcodeSolution
+The solutions for Leetcode 
+第五课：树。图
+    dfs深度优先遍历：先序，中序，后序。其中二叉搜索树中序遍历是有序的
+        DFS+visited，并通过形参排除farther往回走的情况，解决无向图，参考Leetcode684
+    bfs广度优先搜索：借助队列
+        BFS+入度实现拓扑排序，解决有向图，参考Leetcode207
+    基环树：给树加一条形成环的边
+        图的存储：
+            1）邻接矩阵：int[][]
+            2）邻接表：ArrayList<ArrayList<int>>
