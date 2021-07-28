@@ -1,1 +1,63 @@
-s
+第六周算法小结
+    动态规划dp:定义dp数组 -> 找到递推公式。dp的题目特征多为：需要滚动式遍历状态空间，各个状态空间的状态会相互影响，相互制约
+        定义dp：针对题目来定义dp含义，一般来说直接定义为题目需要的结果。比如零钱问题，dp定义为每个amout下需要的数量。也有反例，例如k次交易的股票问题，无法确定进行了几次交易，哪次最大。
+        找到递推：这反过来制约dp的定义是否可行，递推关乎决策选择，dp定义越清晰决策越简单。
+            最优解dp：从递推公式中出发，寻找每个状态下的最优解。优化时维护一个变量
+                // 322 Medium 零钱兑换 coin-change
+                https://leetcode-cn.com/problems/coin-change/
+                // 63 Medium 不同路径Ⅱ unique-paths-ii
+                https://leetcode-cn.com/problems/unique-paths-ii/
+                // 300 Medium 最长递增子序列 longest-increasing-subsequence
+                https://leetcode-cn.com/problems/longest-increasing-subsequence/
+                // 53 Easy 最大子序和 maximum-subarray
+                https://leetcode-cn.com/problems/maximum-subarray/
+                // 152 Medium 乘积最大子数组 maximum-product-subarray
+                // 由于是乘积，最优子结构有所不同
+                https://leetcode-cn.com/problems/maximum-product-subarray/
+                // 70 Easy 爬楼梯 climbing-stairs
+                https://leetcode-cn.com/problems/climbing-stairs/description/
+                // 120 Medium 三角形最小路径和 triangle
+                https://leetcode-cn.com/problems/triangle/description/
+                // 55 Medium 跳跃游戏 jump-game
+                https://leetcode-cn.com/problems/jump-game/
+                // 45 Medium 跳跃游戏Ⅱ jump-game-ii
+                https://leetcode-cn.com/problems/jump-game-ii/
+                稍微复杂一点的：
+                    // 673 Medium 最长递增子序列的个数 number-of-longest-increasing-subsequence
+                    https://leetcode-cn.com/problems/number-of-longest-increasing-subsequence/
+            最优解 + 状态形式dp：问题中有较多状态，可以通过增加dp维度或最大长度来解决。优化时可以将各个状态独立出来分别进行递推
+                // 122 Easy 买卖股票的最佳时机Ⅱ best-time-to-buy-and-sell-stock-ii
+                https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/
+                // 123 Hard 买卖股票的最佳时机Ⅲ best-time-to-buy-and-sell-stock-iii
+                https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/
+                // 188 Hard 买卖股票的最佳时机Ⅳ best-time-to-buy-and-sell-stock-iv
+                https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/
+                // 309 Medium 买卖股票的最佳时机含冷冻期 best-time-to-buy-and-sell-stock-with-cooldown
+                https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
+                // 714 Medium 买卖股票的最佳时机含手续费 best-time-to-buy-and-sell-stock-with-transaction-fee
+                https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
+                // 198 Medium 打家劫舍 house-robber
+                https://leetcode-cn.com/problems/house-robber/
+                环形状态dp：两次dp
+                    // 213 Medium 打家劫舍Ⅱ house-robber-ii
+                    https://leetcode-cn.com/problems/house-robber-ii/
+            抽象定义dp：题目一般优先抽象，递推公式也较难找。思路是先暴力，一般是画表，找到如何递推的
+                // 1143 Medium 最长公共子序列 longest-common-subsequence
+                https://leetcode-cn.com/problems/longest-common-subsequence/
+                // 72 Hard 编辑距离 edit-distance
+                https://leetcode-cn.com/problems/edit-distance/
+        背包：此类题目带有物品 + 属性的概念，往往给定限定大小的容器（体积可以变动），往内放入物品
+            给定N个物品，其中第i个物品的体积为Vi，价值为Wi
+                0-1背包：f[i, j]表示从前i个物品中选出体积为j的物品的最大价值
+                    f[i, j] = max(f[i - 1, j], f[i - 1, j - Vi] + Wi);// 选 / 不选
+                    // 416 Medium 分割等和子集 partition-equal-subset-sum
+                    // 物品：数， 体积：数值， 价值：无
+                    https://leetcode-cn.com/problems/partition-equal-subset-sum/
+                完全背包：0-1背包 + 每个物品有无数个
+                    f[i, j] = max(f[i - 1, j], f[i, j - Vi] + Wi);// 不选 / 尚未选过
+                    // 518 Medium 零钱兑换Ⅱ coin-change-2
+                    // 物品：钱， 体积：面值， 价值：1
+                    https://leetcode-cn.com/problems/coin-change-2/
+                    // 279 Medium 完全平方数 perfect-squares
+                    // 物品：完全平方数， 体积：完全平方数的值， 价值1
+                    https://leetcode-cn.com/problems/perfect-squares/
