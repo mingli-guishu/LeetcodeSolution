@@ -1,4 +1,18 @@
 # LeetcodeSolution
 The solutions for Leetcode 
-    第七课：
-        二叉堆和二叉搜索树 
+    第七课：二叉堆、BST
+二叉堆
+	Java的堆默认是小头堆，可以通过这条语句变成大头堆
+	PriorityQueue<Object> q = new PriorityQueue<Object>(Comparator.reverseOrder());
+	若二叉堆用一维数组来存储：
+		父子位置：
+			以第一个元素从index = 1开始
+			p结点的左孩子在p * 2的位置，右孩子在p * 2 + 1的位置，父亲在p / 2
+		插入：O(logN)
+			若到达根，或<=父结点(大根堆)停止
+			while (p != 1|| queue[p] > queue[p / 2]) { swap(); p /= 2;}
+		删除堆顶：O(logN)
+			swap(q[1], q[end])，删除堆尾。while(小于左右结点较大的) {swap();}
+二叉搜索树(BST)
+	前驱/后驱：中序遍历该数的前一个数/后一个数。也就是树中最后一个小于该数/第一个大于该数的数
+		删除根时用前驱/后驱代替
