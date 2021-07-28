@@ -1,0 +1,5 @@
+# LeetcodeSolution
+The solutions for Leetcode 
+第六课：广搜、深搜
+    搜索：dfs或bfs
+        对状态空间的遍历。只考虑当前需要做什么？上一步得到了什么？下一步要干什么？需不需要还原现场？而不去管整个的栈空间
