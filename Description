@@ -1,0 +1,5 @@
+# LeetcodeSolution
+The solutions for Leetcode 
+第十课：贪心
+    局部最优 力求 全局最优
+    是否可以用贪心应判断全局的状态空间，所以优先使用搜索、dp等全局的思路
