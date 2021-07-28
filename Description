@@ -1,37 +1,51 @@
 # LeetcodeSolution
 The solutions for Leetcode 
-    第八课：
-        二分模板：
-            int left = 0, right = n - 1;
-            while (left <= right) {
-                int mid = (left + right) / 2;
-                if (array[mid] == target)
-                    // find the target!
-                    break or return mid;
-                if (array[mid] < target)
-                    left = mid + 1;
-                else
-                    right = mid - 1;
-            }
-        lower_bound：第一个>=target的数
-            int left = 0, right = n;
-            while (left < right) {
-                int mid = (left + right) >> 1;
-                if (array[mid] >= target) // condition satisfied, should be included
-                    right = mid;
-                else
-                    left = mid + 1;
-            }
-            return right;
-        upper_bound：最后一个<=target的数
-            int left = -1, right = n - 1;
-            while (left < right) {
-                int mid = (left + right + 1) >> 1;
+    第八课：二分、三分、二分答案
+二分
+    模板一：
+        int left = 0, right = n - 1;
+        while (left <= right) {
+	        int mid = (left + right) / 2;
+	        if (array[mid] == target)
+		        // find the target!
+		        break or return mid;
+	        if (array[mid] < target)
+		        left = mid + 1;
+	        else
+		        right = mid - 1;
+        }
+
+    模板二：lower_bound：第一个>=target的数
+        int left = 0, right = n;
+        while (left < right) {
+	        int mid = (left + right) >> 1;
+	        if (array[mid] >= target) // condition satisfied, should be included
+		        right = mid;
+	        else
+		        left = mid + 1;
+        }
+        return right; // return n if cannot find
+
+    模板三：upper_bound：第一个<=target的数
+        int left = -1, right = n - 1;
+        while (left < right) {
+            int mid = (left + right + 1) >> 1;
             if (array[mid] <= target) // condition satisfied, should be included
                 left = mid;
             else
                 right = mid - 1;
-            }
-            return right;
+        }
+        return right;// return -1 if cannot find
 
+三分：求极大/小值，分段中必须严格单调
+    在定义域上[l, r]中任意取两点lmid, rmid
+        if (nums[lmid] <= nums[rmid])
+            l = lmid;// target must within [lmid, r]
+        else
+            r = rmid - 1// target must within [l, rmid - 1];
+
+二分答案：对于求最优解的问题
+    从直接求解 -> 二分搜索 + 可行判断
+    二分搜索整个定义域，不断判断当前答案是否可行。直到返回一个最佳答案
+    ！！！条件：是否可行需要是定义域上的0-1函数。而正好最佳答案处于从0到1的位置
 
