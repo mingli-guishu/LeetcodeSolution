@@ -1,0 +1,11 @@
+# LeetcodeSolution
+The solutions for Leetcode 
+第九课：排序
+    快排可以用于寻找数组中第K大的数
+    计数排序有时可能有不错的效果
+        自定义Arrays.sort(int[], new Comparator<int>() {
+            public int compare(int a, int b) {
+                return a - b;// 小到大
+                return b - a;// 大到小
+                }
+            });
