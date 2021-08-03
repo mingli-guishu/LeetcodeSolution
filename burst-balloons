@@ -1,0 +1,23 @@
+class Solution {
+    // 312 Hard 戳气球 burst-balloons
+    // 区间dp，稍难
+    public int maxCoins(int[] nums) {
+        int length = nums.length;
+        int[][] dp = new int[length + 2][length + 2];
+        int[] mynums = new int[length + 2];
+        for (int i = 1; i < length + 1; i++) 
+            mynums[i] = nums[i - 1];
+        mynums[0] = mynums[length + 1] = 1;
+        // 1     [nums]        1
+        // 0  1 ~ length  length + 1
+        for (int len = 1; len <= length; len++) {// 区间从小到大
+            // left + len - 1 < length + 1
+            for (int left = 1; left + len - 2 < length; left++) {// 左端点
+                int right = left + len - 1;
+                for (int p = left; p <= right; p++) // 找到最优决策
+                    dp[left][right] = Math.max(dp[left][right], dp[left][p - 1] + dp[p + 1][right] + mynums[p] * mynums[left - 1] * mynums[right + 1]);
+            }
+        }
+        return dp[1][length];
+    }
+}
