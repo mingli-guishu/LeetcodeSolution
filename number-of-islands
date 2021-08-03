@@ -1,0 +1,53 @@
+class Solution {
+    // 200 Medium 岛屿数量 number-of-islands
+    char[][] grid;
+    int[] fa;
+    int rows, cols;
+    public int numIslands(char[][] grid) {
+        this.grid = grid;
+        this.rows = grid.length;
+        this.cols = grid[0].length;
+        // 上 左 下 右
+        final int[] dx = new int[]{-1, 0, 1, 0};// 行
+        final int[] dy = new int[]{0, -1, 0, 1};// 列
+        int ans = 0;
+        // 并查集
+        fa = new int[rows * cols];
+        // init
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++) {
+                fa[getIndex(i, j)] = getIndex(i, j);
+                if (grid[i][j] == '1')
+                    ans++;// 记录最大可能的陆地数
+            }
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+                if (grid[i][j] == '1')
+                    for (int dir = 0; dir < 4; dir++) {
+                        int ni = i + dx[dir];
+                        int nj = j + dy[dir];
+                        if (ni < 0 || ni >= rows || nj < 0 || nj >= cols)
+                            continue;
+                        if (grid[ni][nj] == '1') {
+                            int a = find(getIndex(i, j));
+                            int b = find(getIndex(ni, nj));
+                            if (a != b) {
+                                ans--;// 每union一片就--
+                                fa[b] = a;
+                            }
+                        }  
+                    }
+        return ans;
+    }
+
+    // @param grid中的行和列
+    // @return fa中的index
+    private int getIndex(int i, int j) {
+        return i * cols + j;
+    }
+
+    // Trie的find()
+    private int find(int index) {
+        return index == fa[index] ? index : (fa[index] = find(fa[index]));
+    }
+}
