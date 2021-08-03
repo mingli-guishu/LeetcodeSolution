@@ -1,5 +1,6 @@
 class Solution {
     // 1000 Hard 合并石头的最低成本 minimum-cost-to-merge-stones
+    // 区间dp，稍难
     public int mergeStones(int[] stones, int k) {
         int max = 1000000000;
         int length = stones.length;
