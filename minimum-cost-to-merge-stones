@@ -1,0 +1,33 @@
+class Solution {
+    // 1000 Hard 合并石头的最低成本 minimum-cost-to-merge-stones
+    public int mergeStones(int[] stones, int k) {
+        int max = 1000000000;
+        int length = stones.length;
+        int[] sum = new int[length + 1];// 前缀和
+        int[][][] dp = new int[length + 1][length + 1][k + 1];
+        // init
+        for (int i = 1; i <= length; i++)
+            sum[i] = stones[i - 1] + sum[i - 1];
+        for (int i = 1; i <= length; i++) {
+            for (int j = i; j <= length; j++) {
+                for (int m = 2; m <= k; m++)
+                    dp[i][j][m] = max;
+            }
+            dp[i][i][1] = 0;
+        }
+
+        for (int len = 2; len <= length; len++) {// 区间长度
+            // left + len - 1 < length + 1
+            for (int left = 1; left + len - 1 <= length; left++) {// 左端点
+                int right = left + len - 1;// 右端点
+                for (int m = 2; m <= k; m++) {// 堆数
+                    for (int p = left; p < right; p += k - 1)// 分割点
+                        dp[left][right][m] = Math.min(dp[left][right][m], 
+                                        dp[left][p][1] + dp[p + 1][right][m - 1]);
+                }
+                dp[left][right][1] = dp[left][right][k] + sum[right] - sum[left - 1];
+            }
+        }
+        return dp[1][length][1] >= max ? -1 : dp[1][length][1];
+    }
+}
