@@ -1,0 +1,25 @@
+class Solution {
+    // 684 Medium 冗余连接 redundant-connection
+    int[] fa;
+    public int[] findRedundantConnection(int[][] edges) {
+        int max = -1;
+        for (int i = 0; i < edges.length; i++)
+            max = Math.max(max, Math.max(edges[i][0], edges[i][1]));
+        fa = new int[max + 1];// 并查集
+        // init
+        for (int i = 1; i <= max; i++)
+            fa[i] = i;
+        for (int[] edge : edges) {
+            int a = find(edge[0]);
+            int b = find(edge[1]);
+            if (a == b)// 已经连在一起了
+                return edge;
+            fa[b] = a;
+        }
+        return new int[]{0, 0};
+    }
+
+    private int find(int index) {
+        return index == fa[index] ? index : (fa[index] = find(fa[index]));
+    }
+}
