@@ -1,0 +1,30 @@
+class Solution {
+    // 547 Medium 省份数量 number-of-provinces
+    int[] provinces;
+    public int findCircleNum(int[][] isConnected) {
+        int len = isConnected.length;
+        int ans = 0;
+        provinces = new int[len];
+        // 并查集
+        for (int i = 0; i < len; i++)
+            provinces[i] = i;
+        for (int i = 0; i < len; i++)
+            for (int j = i + 1; j < len; j++)
+                if (isConnected[i][j] == 1) {
+                    int a = find(i);
+                    int b = find(j);
+                    if (a != b)
+                        provinces[b] = a;
+                }
+        for (int i = 0; i < len; i++)
+            if (provinces[i] == i)
+                ans++;
+        return ans;
+    }
+
+    private int find(int index) {
+        if (index == provinces[index])
+            return index;
+        return provinces[index] = find(provinces[index]);
+    }
+}
