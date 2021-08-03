@@ -1,0 +1,24 @@
+class Solution {
+    // 1499 Hard 满足不等式的最大值 max-value-of-equation
+    public int findMaxValueOfEquation(int[][] points, int k) {
+        // 单调递减队列，对头为最大值
+        int ans = Integer.MIN_VALUE;
+        Deque<Integer> q = new ArrayDeque<>();// 存下标
+        q.offerFirst(0);
+        for (int i = 1; i < points.length; i++) {
+            // 合法性，x[j] >= x[i] - k为合法
+            while (!q.isEmpty() && points[q.peekFirst()][0] < points[i][0] - k)
+                q.pollFirst();
+            // 得到答案，因为j < i所以先得到答案再入队
+            if (!q.isEmpty())
+                ans = Math.max(ans, points[i][1] + points[i][0] + 
+                            points[q.peekFirst()][1] - points[q.peekFirst()][0]);
+            // 入队，y[j] - x[j]大的在前
+            while (!q.isEmpty() && 
+                points[i][1] - points[i][0] > points[q.peekLast()][1] - points[q.peekLast()][0])
+                q.pollLast();
+            q.offerLast(i);
+        }
+        return ans;
+    }
+}
