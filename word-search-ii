@@ -1,0 +1,75 @@
+class Solution {
+    // 212 Hard 单词搜索Ⅱ word-search-ii
+    // 字典树的节点
+    private class Node {
+        String word;// 若当前节点是某单词的结尾，则word存储此单词
+        HashMap<Character, Node> map;// child
+        public Node() {
+            this.word = null;
+            map = new HashMap<>();
+        }
+    }
+
+    Node root;// 字典树的根
+    List<String> ans;
+    int rows, cols;
+    char[][] board;
+    boolean[][] visited;
+    // 上 左 下 右
+    final int[] dx = new int[]{-1, 0, 1, 0};// 行数变化
+    final int[] dy = new int[]{0, -1, 0, 1};// 列数变化
+    public List<String> findWords(char[][] board, String[] words) {
+        this.board = board;
+        root = new Node();
+        ans = new ArrayList<>();
+        rows = board.length;
+        cols = board[0].length;
+        // insert all words
+        for (String word : words)
+            insert(word);
+        // search
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++) {
+                visited = new boolean[rows][cols];
+                visited[i][j] = true;
+                dfs(i, j, root);
+            }
+        return ans;
+    }
+
+    private void dfs(int x, int y, Node father) {
+        char curchar = board[x][y];
+        if (!father.map.containsKey(curchar))// 不含有当前单词/字母
+            return;
+        Node child = father.map.get(curchar);
+        if (child.word != null) {// 往下看一步是否到底，到底则加入答案
+            ans.add(child.word);
+            child.word = null;// 防止重复添加，查到了某一单词就删去
+        }
+        if (child.map.isEmpty())// 如果child不包含信息了便删除
+            father.map.remove(curchar);
+        for (int dir = 0; dir < 4; dir++) {
+            int cur_x = x + dx[dir];
+            int cur_y = y + dy[dir];
+            // 出界
+            if (cur_x < 0 || cur_x >= rows || cur_y < 0 || cur_y >= cols)
+                continue;
+            // 访问过
+            if (visited[cur_x][cur_y])
+                continue;
+            visited[cur_x][cur_y] = true;
+            dfs(cur_x, cur_y, child);
+            visited[cur_x][cur_y] = false;
+        }
+    }
+    
+    private void insert(String word) {
+        Node cur = root;
+        for (char c : word.toCharArray()) {
+            if (!cur.map.containsKey(c))
+                cur.map.put(c, new Node());
+            cur = cur.map.get(c);
+        }
+        cur.word = word;
+    }
+}
