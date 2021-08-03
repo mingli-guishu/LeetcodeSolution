@@ -1,0 +1,21 @@
+class Solution {
+    // 337 Medium 打家劫舍Ⅲ house-robber-iii
+    // 树形dp
+    HashMap<TreeNode, int[]> dp = new HashMap<>();
+    public int rob(TreeNode root) {
+        if (root == null)
+            return 0;
+        int[] cur = new int[2];
+        if (root.left != null) {
+            cur[0] += rob(root.left);// 偷
+            cur[1] += dp.get(root.left)[0];// 不偷
+        }
+        if (root.right != null) {
+            cur[0] += rob(root.right);// 偷
+            cur[1] += dp.get(root.right)[0];// 不偷
+        }
+        cur[1] += root.val;
+        dp.put(root, cur);
+        return Math.max(cur[0], cur[1]);
+    }
+}
