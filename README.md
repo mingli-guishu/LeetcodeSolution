@@ -2,7 +2,8 @@
 The solutions for Leetcode 
 第十四课
     字典树
-	      顾名思义， 按照字典的方式(前缀)来存储单词，所以每个Node可以存map或int[26]
+	    顾名思义， 按照字典的方式(前缀)来存储单词，所以每个Node可以存map或int[26]
+	    
             class Trie {
                 public Trie() { 
                     root = new Node(); 
@@ -43,6 +44,7 @@ The solutions for Leetcode
             
 并查集
     不相交集合：只关注自己的父亲是谁，有一样的father就来自同一交集
+    
         class DisjointSet {
             int[] fa;
             public DisjointSet(int n) {
