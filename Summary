@@ -1,0 +1,14 @@
+# LeetcodeSolution
+The solutions for Leetcode 
+第十三课
+    区间dp
+	    区间dp标志在区间之间相互影响，如何分割区间会影响到全局，修改了左边的区间，右边区间会受影响
+	    以区间为单位的dp，常常以如下形式
+      
+		      for (len; len++) // 区间长度
+              for (left; left++)// 区间起点
+                  right = // 区间右端点
+                      for (int p = left; p++)// 区间分割点
+                      
+树形dp
+	可以借助hashmap<Node, int[2]>
