@@ -1,1 +1,29 @@
 第七周算法小结
+    区间dp、树形dp：dp的复杂运用
+        区间dp明显的特征在以区间为单位，题目的呈现类似于“叠叠乐”，从中间抽去一块会影响上下的区间。所以区间dp的难度也较大
+            // 312 Hard 戳气球 burst-balloons
+            https://leetcode-cn.com/problems/burst-balloons/
+            // 1000 Hard 合并石头的最低成本 minimum-cost-to-merge-stones
+            https://leetcode-cn.com/problems/minimum-cost-to-merge-stones/
+        树形dp与传统的滚动决策型dp类似，不过是树状，以节点代替数组。可以使用hashmap
+            // 337 Medium 打家劫舍Ⅲ house-robber-iii
+            https://leetcode-cn.com/problems/house-robber-iii/
+    字典树(前缀树)
+        按前缀来统计单词。以前缀分组记录降低时间复杂度。
+        而一般只能记录单词量/字母量较小的语言。若以中文字来存储则无法达到空间换时间的目的，可以转换成拼音 + 字母 + 声调 + ...
+            // 208 Medium 实现Trie(前缀树) implement-trie-prefix-tree
+            https://leetcode-cn.com/problems/implement-trie-prefix-tree/
+        前缀树的去冗:
+            // 212 Hard 单词搜索Ⅱ word-search-ii
+            https://leetcode-cn.com/problems/word-search-ii/
+    并查集：不相交集类，详见迷宫算法
+        并查集往往可以用bfs/dfs取代
+            // 547 Medium 省份数量 number-of-provinces
+            https://leetcode-cn.com/problems/number-of-provinces/
+            // 130 Medium 被围绕的区域 surrounded-regions
+            https://leetcode-cn.com/problems/surrounded-regions/
+        比较其dfs的实现：
+            // 684 Medium 冗余连接 redundant-connection
+            https://leetcode-cn.com/problems/redundant-connection/
+            // 200 Medium 岛屿数量 number-of-islands
+            https://leetcode-cn.com/problems/number-of-islands/
