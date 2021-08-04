@@ -1,0 +1,54 @@
+class Solution {
+    // 130 Medium 被围绕的区域 surrounded-regions
+    int[] fa;
+    int cols;
+    public void solve(char[][] board) {
+        // 上 左 下 右
+        final int[] dx = new int[]{-1, 0, 1, 0};// 行数变化
+        final int[] dy = new int[]{0, -1, 0, 1};// 列数变化
+        this.cols = board[0].length;
+        int rows = board.length;
+        final int outer = rows * cols;// 出界的fa
+        fa = new int[rows * cols + 1];// 并查集
+        // init
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+                fa[getIndex(i, j)] = getIndex(i, j);
+        fa[outer] = outer;
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == 'X')
+                    continue;
+                // 每个点的四个方向搜索
+                for (int dir = 0; dir < 4; dir++) {
+                    int next_x = i + dx[dir];
+                    int next_y = j + dy[dir];
+                    if (next_x < 0 || next_x >= rows || next_y < 0 || next_y >= cols) {// 出界
+                        int cur = find(getIndex(i, j));
+                        if (cur != outer)
+                            fa[cur] = outer;// 连接到外部
+                    } else if (board[next_x][next_y] == 'O') {// 合并
+                        int a = find(getIndex(next_x, next_y));
+                        int b = find(getIndex(i, j));
+                        if (a == outer)
+                            fa[b] = a;
+                        else
+                            fa[a] = b;
+                    }     
+                }
+            }
+        for (int i = 0; i < rows; i++) 
+            for (int j = 0; j < cols; j++) 
+                if (board[i][j] == 'O' && find(getIndex(i, j)) != outer)// 没连接到外部的
+                    board[i][j] = 'X';   
+    }
+
+    // 二维数组下标转一维
+    private int getIndex(int i, int j) {
+        return i * cols + j;
+    } 
+
+    private int find(int index) {
+        return index == fa[index] ? index : (fa[index] = find(fa[index]));
+    }
+}
