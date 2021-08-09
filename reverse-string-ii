@@ -1,0 +1,28 @@
+class Solution {
+    // 541 Easy 反转字符串Ⅱ reverse-string-ii
+    public String reverseStr(String s, int k) {
+        StringBuilder builder = new StringBuilder();
+        int l = 0, r = -1;;
+        int len = s.length();
+        while (r < len) {
+            StringBuilder cur = new StringBuilder();
+            r += k;
+            if (r >= len) { // 反转后break
+                cur = cur.append(s.substring(l, len)).reverse();
+                builder = builder.append(cur.toString());
+                break;
+            }
+            cur = cur.append(s.substring(l, r + 1)).reverse();
+            builder = builder.append(cur.toString());
+            l += k;
+            r += k;
+            if (r >= len) { // append后break
+                builder.append(s.substring(l, len));
+                break;
+            }
+            builder.append(s.substring(l, r + 1));
+            l += k;
+        }
+        return builder.toString();
+    }
+}
