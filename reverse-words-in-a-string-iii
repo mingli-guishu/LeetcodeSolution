@@ -1,0 +1,20 @@
+class Solution {
+    // 557 Easy 反转字符串中的单词Ⅲ reverse-words-in-a-string-iii
+    public String reverseWords(String s) {
+        StringBuilder main = new StringBuilder();
+        int l = 0, r = 0;
+        int len = s.length();
+        while (r < len) {
+            while (r < len && s.charAt(r) != ' ')
+                r++;
+            StringBuilder cur = new StringBuilder();
+            cur = cur.append(s.substring(l, r)).reverse();
+            main.append(cur.toString());
+            if (r >= len)
+                break;
+            l = ++r;
+            main.append(" ");
+        }
+        return main.toString();
+    }
+}
