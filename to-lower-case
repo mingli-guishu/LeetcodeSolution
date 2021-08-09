@@ -1,0 +1,15 @@
+class Solution {
+    // 709 Easy 转换成小写字母 to-lower-case
+    public String toLowerCase(String s) {
+        // ASCII码大写字母在65~90，小写 = 大写 + 32
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char cur = s.charAt(i);
+            if (cur >= 'A' && cur <= 'Z')
+                builder.append((char)(cur + 32));
+            else
+                builder.append(cur);
+        }
+        return builder.toString();
+    }
+}
