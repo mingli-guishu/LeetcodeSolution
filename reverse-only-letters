@@ -1,0 +1,28 @@
+class Solution {
+    // 917 Easy 仅仅反转字母 reverse-only-letters
+    public String reverseOnlyLetters(String s) {
+        // 双指针
+        StringBuilder ans = new StringBuilder();
+        int len = s.length();
+        int l = 0, r = len - 1;
+        // 字母的ASCII:65~90,97~122
+        while (l < len) {
+            // 先判断左侧不需要反转的位置
+            char cl = s.charAt(l);
+            while (cl < 'A' || (cl < 'a' && cl > 'Z')) {
+                ans.append(cl);
+                if (++l >= len) break;
+                cl = s.charAt(l);
+            }
+            if (l >= len) break;
+            // 右侧寻找字母
+            char cr = s.charAt(r);
+            while (cr < 'A' || (cr < 'a' && cr > 'Z')) 
+                cr = s.charAt(--r);
+            ans.append(cr);
+            l++;
+            r--;
+        }
+        return ans.toString();
+    }
+}
