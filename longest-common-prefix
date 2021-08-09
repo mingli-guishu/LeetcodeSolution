@@ -1,0 +1,63 @@
+class Solution {
+    // 14 Easy 最长公共前缀 longest-common-prefix
+    // 字典树
+    public String longestCommonPrefix(String[] strs) {
+        Node root = new Node();
+        for (String cur : strs) { // 把strs的String装入字典树
+            Node curNode = root;
+            if (cur.equals("")) return "";
+            for (int i = 0; i < cur.length(); i++) {
+                char c = cur.charAt(i);
+                if (!curNode.child.containsKey(c)) {
+                    curNode.child.put(c, new Node());
+                    curNode.c = c; // 记录第一个放入map的char
+                }
+                curNode = curNode.child.get(c);
+                if (i == cur.length() - 1)
+                    curNode.count++; // 一个单词到底了，用count记录 
+            }
+        }
+        StringBuilder builder = new StringBuilder();
+        while (root.child.size() == 1 && root.count == 0) {
+            builder.append(root.c);
+            root = root.child.get(root.c);
+        }
+        return builder.toString();
+    }
+
+    private class Node {
+        HashMap<Character, Node> child;
+        int count;
+        char c; // 记录第一个出现的char
+        public Node() {
+            child = new HashMap<>();
+            count = 0;
+        }
+    }
+    
+    // 纵向扫描
+    public String longestCommonPrefix(String[] strs) {
+        StringBuilder builder = new StringBuilder();
+        char c = 'A';
+        int index = 0;
+        for (int i = 0; i < strs.length; i++) {
+            if (strs[i].equals(" ")) return "";
+            if (c == 'A') {
+                if (index < strs[i].length()) // index是否越界
+                    c = strs[i].charAt(index);
+                else break;
+            }
+            if (index < strs[i].length()) {
+                if (c != strs[i].charAt(index)) // index是否越界
+                    break;
+            } else break;
+            if (i == strs.length - 1) {
+                builder.append(c);
+                i = -1; // 重新扫
+                c = 'A';
+                index++;
+            }
+        }
+        return builder.toString();
+    }
+}
