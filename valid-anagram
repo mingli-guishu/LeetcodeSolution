@@ -1,0 +1,32 @@
+class Solution {
+    // 242 Easy 有效的字母异位词 valid-anagram
+    // 若只包含字母，用数组解决
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) return false;
+        int len = s.length();
+        int[] count = new int[26];
+        for (int i = 0; i < len; i++) // 先扫s
+            count[s.charAt(i) - 'a']++;
+        for (int i = 0; i < len; i++) // 再扫t
+            if (--count[t.charAt(i) - 'a'] < 0)
+                return false;
+        return true;
+    }
+    
+    // 若面向Unicode，用map
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) return false;
+        int len = s.length();
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < len; i++) { // 先扫s
+            char cur = s.charAt(i);
+            map.put(cur, map.getOrDefault(cur, 0) + 1);
+        }
+        for (int i = 0; i < len; i++) { // 再扫t
+            char cur = t.charAt(i);
+            int count = map.getOrDefault(cur, 0);
+            if (--count < 0)
+                return false;
+            map.put(cur, count);
+        }
+        return true;
