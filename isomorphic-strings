@@ -1,0 +1,28 @@
+class Solution {
+    // 205 Easy 同构字符串 isomorphic-strings
+    // 双hashmap
+    public boolean isIsomorphic(String s, String t) {
+        HashMap<Character, Character> maps = new HashMap<>(); // 存储映射关系
+        // 不同字母不能映射到相同字符，存储反映射关系
+        HashMap<Character, Character> mapt = new HashMap<>(); 
+        for (int i = 0; i < s.length(); i++) {
+            char ch_s = s.charAt(i);
+            char ch_t = t.charAt(i);
+            // 当前出现的字符与之前映射的字符不同
+            if (mapt.getOrDefault(ch_t, ch_s) != ch_s || maps.getOrDefault(ch_s, ch_t) != ch_t)
+                return false;
+            maps.put(ch_s, ch_t);
+            mapt.put(ch_t, ch_s);
+        }
+        return true;
+    }
+    
+    // indexOf()
+    public boolean isIsomorphic(String s, String t) {
+        for (int i = 0; i < s.length(); i++)
+            // indexOf()返回字符串中第一次出现该字符的位置
+            if (s.indexOf(s.charAt(i)) != t.indexOf(t.charAt(i)))
+                return false;
+        return true;
+    }
+}
