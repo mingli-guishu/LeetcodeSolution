@@ -30,3 +30,5 @@ class Solution {
             map.put(cur, count);
         }
         return true;
+    }
+}
