@@ -1,0 +1,46 @@
+class Solution {
+    // 686 Medium 重复叠加字符串匹配 repeated-string-match
+    // Rabin-Karp算法
+    public int repeatedStringMatch(String a, String b) {
+        int times = b.length() / a.length();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 1; i <= times; i++)
+            builder.append(a);
+        if (builder.toString().equals(b))
+            return times;
+        int p = (int)1e9 + 7;
+        int blen = b.length();
+        long b_hash = 0;
+        long p131 = 1;
+        for (int i = 0; i < blen; i++) { // 得到b的hash码 和 131的blen次方
+            b_hash = (b_hash * 131 + (b.charAt(i) - 'a' + 1)) % p;
+            p131 = p131 * 131 % p;
+        }
+        for (int count = 0; count < 2; count++) {
+            builder.append(a);
+            times++;
+        }
+        String str = builder.toString();
+        int strlen = str.length();
+        long[] str_hash = new long[strlen + 1];
+        str_hash[0] = 0;
+        for (int i = 1; i < strlen; i++)
+            str_hash[i] = (str_hash[i - 1] * 131 + (str.charAt(i - 1) - 'a' + 1)) % p;
+        int ans = strStr(str_hash, b_hash, p, p131, strlen, blen);
+        if (ans == -1)
+            return -1;
+        // --ans是因为返回的是数组的下标，而数组长度是+1后的
+        return --ans < strlen - a.length() ? times - 1 : times;
+    }
+
+    // Rabin-Karp
+    // @return 返回子串出现位置的后坐标
+    private int strStr(long[] hash, long b_hash, long p, long p131, int str_len, int b_len) {
+        for (int i = b_len; i <= str_len; i++) {
+            long cur = ((hash[i] - hash[i - b_len] * p131) % p + p) % p;
+            if (cur == b_hash)
+                return i;
+        }
+        return -1;
+    }
+}
