@@ -1,0 +1,77 @@
+class Solution {
+    // 743 Medium 网络延迟时间 network-delay-time
+    // ballmax-ford算法 O(mn)
+    public int networkDelayTime(int[][] times, int n, int k) {
+        int[] dist = new int[n + 1];
+        int ans = 0;
+        // init
+        for (int i = 1; i <= n; i++)
+            dist[i] = 1000000000;
+        dist[k] = 0;
+        for (int round = 1; round < n; round++) {
+            boolean update = false;
+            for (int[] time : times) {
+                if (dist[time[1]] > dist[time[0]] + time[2]) {
+                    dist[time[1]] = dist[time[0]] + time[2];
+                    update = true;
+                }
+            }
+            if (!update)
+                break;
+        }
+        for (int i = 1; i <= n; i++)
+            ans = Math.max(ans, dist[i]);
+        return ans == 1000000000 ? -1 : ans;
+    }
+    
+    // Dijkstra算法 存图用出边数组 O(mlogn)
+    public int networkDelayTime(int[][] times, int n, int k) {
+        int[] dist = new int[n + 1];
+        boolean[] visited = new boolean[n + 1];
+        // 存图
+        ArrayList<List<Integer>> edges = new ArrayList<>(); // 出边数组,x可以到达的y
+        ArrayList<List<Integer>> vals = new ArrayList<>(); // 时间，与edges对应的从x到y的时间
+        int ans = 0;
+        // 数组存dist和编号 int[0] = dist, int[1] = 编号
+        PriorityQueue<int[]> q = new PriorityQueue<int[]>(new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) { // 小根
+                return a[0] - b[0];
+            }
+        });
+        // init
+        for (int i = 0; i <= n; i++) {
+            edges.add(new ArrayList<Integer>());
+            vals.add(new ArrayList<Integer>());
+        }
+        for (int[] time : times) {
+            int x = time[0], y = time[1], z = time[2];
+            edges.get(x).add(y);
+            vals.get(x).add(z);
+        }
+        dist[k] = 0;
+        q.offer(new int[]{dist[k], k});
+        for (int i = 1; i <= n; i++)
+            dist[i] = 1000000000;
+        dist[k] = 0;
+        while (!q.isEmpty()) {
+            int x = q.poll()[1];
+            if (visited[x]) continue; // 访问过了
+            visited[x] = true;
+            List<Integer> cur_edge = edges.get(x); // 连接所有x的节点
+            List<Integer> cur_val = vals.get(x); // 以及时间
+            // 扫描出边数组，找到与当前节点连接的边
+            for (int i = 0; i < cur_edge.size(); i++) {
+                // dist[x] + z < dist[y]
+                int y = cur_edge.get(i), z = cur_val.get(i);
+                if (dist[x] + z < dist[y]) {
+                    dist[y] = dist[x] + z;
+                    q.offer(new int[]{dist[y], y});
+                }
+            }
+        }
+        
+        for (int i = 1; i <= n; i++)
+            ans = Math.max(ans, dist[i]);
+        return ans == 1000000000 ? -1 : ans;
+    }
+}
