@@ -1,0 +1,26 @@
+class Solution {
+    // 44 Hard 通配符匹配 wildcard-matching
+    public boolean isMatch(String s, String p) {
+        int slen = s.length();
+        int plen = p.length();
+        boolean[][] dp = new boolean[slen + 1][plen + 1];
+        dp[0][0] = true;
+        // *与空串建立连接
+        for (int i = 0; i < plen; i++) {
+            if (p.charAt(i) == '*')
+                dp[0][i + 1] = dp[0][i];
+        }
+        for (int i = 0; i < slen; i++) {
+            char cur_s = s.charAt(i);
+            for (int j = 0; j < plen; j++) {
+                char cur_p = p.charAt(j);
+                if (cur_p != '*') { // 前面匹配了且当下也要匹配
+                    dp[i + 1][j + 1] = dp[i][j] && (cur_p == cur_s || cur_p == '?');
+                } else { // 匹配空串 || 任意匹配非空串
+                    dp[i + 1][j + 1] = dp[i + 1][j] || dp[i][j + 1];
+                }
+            }
+        }
+        return dp[slen][plen];
+    }
+}
