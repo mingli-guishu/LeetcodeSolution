@@ -1,0 +1,12 @@
+# LeetcodeSolution
+The solutions for Leetcode 
+图论：
+    1、Bellman-Ford: O(mn)
+        1) 扫描所有边(x, y, z), 若dist[y] > dist[x] + z则更新dist[y]
+        2) 重复上述动作直到没有更新产生，最多n-1轮
+    2、Dijkstra算法: O(mlogn)
+        1) 利用堆和visited，找到没有访问过的dist[x]最小的节点，然后visited = true
+        2) 扫描节点x的所有出边(出边数组/邻接表),若dist[y] > dist[x] + z则更新dist[y]
+        3) 重复2、3，直到全部访问过
+    3、Floyd算法
+    4、Kruskal算法：O(mlogm) 最小生成树
