@@ -1,0 +1,25 @@
+class Solution {
+    // 125 Easy 验证回文串 valid-palindrome
+    public boolean isPalindrome(String s) {
+        // 双指针
+        int len = s.length();
+        int l = 0, r = len - 1;
+        while (l < r) {
+            char left = s.charAt(l);
+            while (!Character.isLetter(left) && !Character.isDigit(left)) {
+                if (++l >= len) break;
+                left = s.charAt(l);
+            }
+            char right = s.charAt(r);
+            while (!Character.isLetter(right) && !Character.isDigit(right)) {
+                if (--r < 0) break;
+                right = s.charAt(r);
+            }
+            if (Character.toLowerCase(left) != Character.toLowerCase(right))
+                break;
+            l++;
+            r--;
+        }
+        return l >= r ? true : false;
+    }
+}
