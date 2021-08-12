@@ -1,0 +1,34 @@
+class Solution {
+    // 438 Medium 找到字符串中所有字母异位词 find-all-anagrams-in-a-string
+    public List<Integer> findAnagrams(String s, String p) {
+        // 数组 + 滑动窗
+        int plen = p.length();
+        List<Integer> ans = new ArrayList<>();
+        if (s.length() < plen) return ans;
+        int[] count_p = new int[26]; // 记录p中各个字母的出现次数
+        int[] count_s = new int[26]; // 记录s的plen长度中各个字母的出现次数
+        char[] s_char = s.toCharArray();
+        // 初始化count_s和count_p开头plen长度
+        for (int i = 0; i < plen; i++) {
+            count_p[p.charAt(i) - 'a']++;
+            count_s[s_char[i] - 'a']++;
+        }
+        if (isAnagrams(count_s, count_p))
+            ans.add(0); // 开头的特判
+        for (int i = plen; i < s.length(); i++) {
+            count_s[s_char[i] - 'a']++; // 增
+            count_s[s_char[i - plen] - 'a']--; // 删
+            if (isAnagrams(count_s, count_p))
+                ans.add(i - plen + 1);
+        }
+        return ans;
+    }
+
+    // 判断两数组（两单词出现的字母）是否相同
+    private boolean isAnagrams(int[] s, int[] p) {
+        for (int i = 0; i < 26; i++)
+            if (p[i] != s[i])
+                return false;
+        return true;
+    }
+}
