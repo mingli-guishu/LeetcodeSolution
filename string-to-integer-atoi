@@ -1,0 +1,25 @@
+class Solution {
+    // 8 Medium 字符串转换整数(atoi) string-to-integer-atoi
+    public int myAtoi(String s) {
+        s = s.trim();
+        if (s.length() == 0) return 0; 
+        int ans = 0;
+        char[] arr = s.toCharArray();// 去除前导空格
+        boolean sign = true; // 初始化为正数
+        int index = 0;
+        if (arr[index] == '+' || arr[index] == '-') { // ±判断
+            if (arr[index] == '-')
+                sign = false;
+            index++;
+        }
+        while (index < arr.length) {
+            if (arr[index] < '0' || arr[index] > '9')
+                break;
+            // ans * 10 + arr[index] - '0' > max || < min
+            if (ans > (Integer.MAX_VALUE - (arr[index] - '0')) / 10) // 溢出
+                return sign ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            ans = ans * 10 + arr[index++] - '0'; 
+        }
+        return sign ? ans : -ans;
+    }
+}
