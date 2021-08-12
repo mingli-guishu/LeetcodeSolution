@@ -1,0 +1,30 @@
+class Solution {
+    // 5 Medium 最长回文子串 longest-palindromic-substring
+    // 中心扩散法 O(n2)
+    public String longestPalindrome(String s) {
+        int len = s.length();
+        int start = 0, end = 0;
+        boolean[][] dp = new boolean[len][len];
+        for (int l = 0; l < len; l++) { // 绝对长度 = right - left
+            for (int left = 0; left + l < len; left++) { // 左端点
+                int right = left + l; // 右端点
+                // 滚动判断
+                if (left == right)
+                    dp[left][right] = true;
+                else if (right - 1 == left)
+                    dp[left][right] = s.charAt(left) == s.charAt(right);
+                else
+                    dp[left][right] = 
+                        s.charAt(left) == s.charAt(right) && dp[left + 1][right - 1];
+                // 更新答案
+                if (dp[left][right] && right - left > end - start) {
+                    start = left;
+                    end = right;
+                }
+            }
+        }
+        return s.substring(start, end + 1);
+    }
+    
+    // 二分 + Rabin-Karp
+}
