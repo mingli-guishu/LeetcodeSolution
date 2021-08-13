@@ -1,0 +1,21 @@
+class Solution {
+    // 36 Medium 有效的数独 valid-sudoku
+    public boolean isValidSudoku(char[][] board) {
+        boolean[][] rows = new boolean[9][10]; // 9行，每行10个数字
+        boolean[][] cols = new boolean[9][10];
+        boolean[][] boxs = new boolean[9][10];
+        for (int i = 0; i < 9; i++)
+            for (int j = 0; j < 9; j++)
+                if (board[i][j] != '.') {
+                    int box = j / 3 * 3 + i / 3;
+                    int curNum = board[i][j] - '0';
+                    if (rows[i][curNum]) return false;
+                    rows[i][curNum] = true;
+                    if (cols[j][curNum]) return false;
+                    cols[j][curNum] = true;
+                    if (boxs[box][curNum]) return false;
+                    boxs[box][curNum] = true;
+                }
+        return true;
+    }
+}
