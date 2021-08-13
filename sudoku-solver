@@ -1,0 +1,57 @@
+class Solution {
+    // 37 Hard 解数独 sudoku-solver
+    boolean[][] valid_row = new boolean[9][10]; // 9行，每行1~9个数
+    boolean[][] valid_col = new boolean[9][10]; // false表示还未使用
+    boolean[][] valid_box = new boolean[9][10];
+    public void solveSudoku(char[][] board) {
+        // init
+        for (int i = 0; i < 9; i++)
+            for (int j = 0; j < 9; j++)
+                if (board[i][j] != '.') {
+                    int box_id = j / 3 * 3 + i / 3;
+                    int num = board[i][j] - '0';
+                    valid_row[i][num] = true;
+                    valid_col[j][num] = true;
+                    valid_box[box_id][num] = true;
+                }
+        dfs(board);
+    }
+
+    private boolean dfs(char[][] board) {
+        int[] cur = findPo(board);
+        int i = cur[0], j = cur[1];
+        if (i == -1) return true; // 解开了数独
+        int id = j / 3 * 3 + i / 3;
+        for (int num = 1; num <= 9; num++)
+            if (!valid_row[i][num] && !valid_col[j][num] && !valid_box[id][num]) {
+                valid_row[i][num] = valid_col[j][num] = valid_box[id][num] = true;
+                board[i][j] = (char)(num + '0'); 
+                if (dfs(board)) return true;
+                board[i][j] = '.';
+                valid_row[i][num] = valid_col[j][num] = valid_box[id][num] = false;
+            }
+        return false;
+    }
+
+    // 找到能填数字最少的位置
+    private int[] findPo(char[][] board) {
+        int maxcount = (int)1e9;
+        int[] retn = new int[]{-1, -1};
+        for (int i = 0; i < 9; i++)
+            for (int j = 0; j < 9; j++)
+                if (board[i][j] == '.') {
+                    int count = 0;
+                    int id = j / 3 * 3 + i / 3;
+                    for (int num = 1; num < 9; num++)
+                        if (!valid_row[i][num] && !valid_col[j][num] && !valid_box[id][num])
+                            count++;
+                    if (count < maxcount) { // 如果当前位置可以填的数字 比 目前最少还要少，则更新
+                        maxcount = count;
+                        retn[0] = i;
+                        retn[1] = j;
+                        if (count == 1) return retn;
+                    }
+                }
+        return retn;
+    }
+}
