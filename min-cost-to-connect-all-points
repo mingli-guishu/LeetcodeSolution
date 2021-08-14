@@ -1,0 +1,51 @@
+class Solution {
+    // 1584 Medium 连接所有点的最小费用 min-cost-to-connect-all-points
+    // Kruskal算法，自定义类 + 堆(其实可以不用定义新类)
+    Point[] fa;
+    public int minCostConnectPoints(int[][] points) {
+        // Kruskal
+        int ans = 0;
+        PriorityQueue<int[]> q = new PriorityQueue<int[]>(new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return a[0] - b[0]; // 小根
+            }
+        });
+        fa = new Point[points.length]; // 并查集
+        for (int i = 0; i < points.length; i++)
+            fa[i] = new Point(points[i][0], points[i][1], i);
+        for (int i = 0; i < fa.length; i++) {
+            Point a = fa[i];
+            for (int j = i + 1; j < fa.length; j++) {
+                Point b = fa[j];
+                q.offer(new int[]{Math.abs(a.x - b.x) + Math.abs(a.y - b.y), a.fa, b.fa});
+            }
+        }
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int x = find(cur[1]);
+            int y = find(cur[2]);
+            if (x != y) { // 建立连接
+                ans += cur[0];
+                fa[y].fa = x;
+            }
+        }
+        return ans;
+    }
+
+    private int find(int x) {
+        if (fa[x].fa == x)
+            return x ;
+        return fa[x].fa = find(fa[x].fa);
+    }
+
+    private class Point {
+        int x;
+        int y;
+        int fa; 
+        public Point(int x, int y, int fa) {
+            this.x = x;
+            this.y = y;
+            this.fa = fa;
+        }
+    }
+}
