@@ -1,0 +1,49 @@
+class Solution {
+    // 1091 Medium 二进制矩阵中的最短路径 shortest-path-in-binary-matrix
+    // bfs
+    Queue<int[]> q;
+    HashMap<Integer, Integer> map; // x,y信息 + step
+    int[][] grid;
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        int n = grid.length;
+        if (grid[0][0] == 1 || grid[n - 1][n - 1] == 1) return -1;
+        q = new ArrayDeque<>();
+        map = new HashMap<>();
+        this.grid = grid;
+        map.put(trans(0, 0), 1);
+        q.offer(new int[]{0, 0});
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int x = cur[0], y = cur[1], curStep = map.get(trans(x, y));
+            // 八个方向
+            if (y != 0) {
+                if (x != 0) addState(x - 1, y - 1, n, curStep); // 左上
+                if (x != n - 1) addState(x + 1, y - 1, n, curStep); // 左下
+                addState(x, y - 1, n, curStep); // 左
+            }
+            if (y != n - 1) {
+                if (x != 0) addState(x - 1, y + 1, n, curStep); // 右上
+                if (x != n - 1) addState(x + 1, y + 1, n, curStep); // 右下
+                addState(x, y + 1, n, curStep); // 右
+            }
+            if (x != 0) addState(x - 1, y, n, curStep); // 上
+            if (x != n - 1) addState(x + 1, y, n, curStep); // 下
+        }
+        return map.getOrDefault(trans(n - 1, n - 1), -1); 
+    }
+
+    private void addState(int x, int y, int n, int preStep) {
+        if (x < 0 || x >= n || y < 0 || y >= n || grid[x][y] == 1)
+            return;
+        int curState = trans(x, y);
+        if (preStep + 1 < map.getOrDefault(curState, (int)1e9)) {
+            map.put(curState, preStep + 1);
+            q.offer(new int[]{x, y});
+        }
+    }
+
+    // 把x,y的位置信息转换成一个int信息
+    private int trans(int x, int y) {
+        return x * 100 + y;
+    }
+}
