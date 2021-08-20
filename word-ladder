@@ -1,0 +1,46 @@
+class Solution {
+    // 127 Hard 单词接龙 word-ladder
+    // 双向bfs
+    HashSet<String> allwords;
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        // 参考433 最小基因变化 双向BFS
+        allwords = new HashSet<>();
+        HashSet<String> cur = new HashSet<>();
+        HashSet<String> target = new HashSet<>();
+        for (String word : wordList)
+            allwords.add(word);
+        if (!allwords.contains(endWord)) return 0;
+        cur.add(beginWord);
+        target.add(endWord);
+        return bfs(cur, target, beginWord.length(), 1);
+    }
+
+    private int bfs(HashSet<String> cur, HashSet<String> target, int len, int times) {
+        if (cur.isEmpty())
+            return 0;
+        if (cur.size() > target.size())
+            return bfs(target, cur, len, times); // 减少搜索数量
+        HashSet<String> next = new HashSet<>();
+        for (String s : cur) { // 得到cur中的每一个数
+            StringBuilder builder = new StringBuilder(s); // s转成可变模式
+            for (int i = 0; i < len; i++) { // s的每一个位置
+                char cur_c = s.charAt(i);
+                for (int j = 97; j <= 122; j++) { // 都有26个字母的变化
+                    char replace = (char)j;
+                    if (cur_c == replace)
+                        continue; // 去重
+                    builder.setCharAt(i, replace); // 替换
+                    String afterChange = builder.toString();
+                    if (target.contains(afterChange)) // 找到答案
+                       return times + 1;
+                    if (allwords.contains(afterChange)) {
+                        next.add(afterChange);
+                        allwords.remove(afterChange); // 不能往回走
+                    }
+                }
+                builder.setCharAt(i, cur_c); // 还原
+            }
+        }
+        return bfs(next, target, len, times + 1);
+    }
+}
