@@ -1,49 +1,85 @@
 class Solution {
     // 1091 Medium 二进制矩阵中的最短路径 shortest-path-in-binary-matrix
     // bfs
-    Queue<int[]> q;
-    HashMap<Integer, Integer> map; // x,y信息 + step
-    int[][] grid;
     public int shortestPathBinaryMatrix(int[][] grid) {
         int n = grid.length;
         if (grid[0][0] == 1 || grid[n - 1][n - 1] == 1) return -1;
-        q = new ArrayDeque<>();
-        map = new HashMap<>();
-        this.grid = grid;
-        map.put(trans(0, 0), 1);
+        if (n == 1) return 1; // 起点即终点
+        final int[][] dirs = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}; // 左上 -> 上 -> ... -> 右下
+        Queue<int[]> q = new ArrayDeque<>();
+        int steps = 1;
         q.offer(new int[]{0, 0});
         while (!q.isEmpty()) {
-            int[] cur = q.poll();
-            int x = cur[0], y = cur[1], curStep = map.get(trans(x, y));
-            // 八个方向
-            if (y != 0) {
-                if (x != 0) addState(x - 1, y - 1, n, curStep); // 左上
-                if (x != n - 1) addState(x + 1, y - 1, n, curStep); // 左下
-                addState(x, y - 1, n, curStep); // 左
+            int size = q.size();
+            for (int i = 0; i < size; i++) { // 每一步只走取size个
+                int[] cur = q.poll();
+                for (int j = 0; j < 8; j++) { // 八个方向
+                    int x = cur[0] + dirs[j][0];
+                    int y = cur[1] + dirs[j][1];
+                    if (x < 0 || x >= n || y < 0 || y >= n || grid[x][y] == 1)
+                        continue;
+                    if (x == n - 1 && y == n - 1)
+                        return ++steps;
+                    q.offer(new int[]{x, y});
+                    grid[x][y] = 1; // 去重
+                }
             }
-            if (y != n - 1) {
-                if (x != 0) addState(x - 1, y + 1, n, curStep); // 右上
-                if (x != n - 1) addState(x + 1, y + 1, n, curStep); // 右下
-                addState(x, y + 1, n, curStep); // 右
-            }
-            if (x != 0) addState(x - 1, y, n, curStep); // 上
-            if (x != n - 1) addState(x + 1, y, n, curStep); // 下
+            steps++;
         }
-        return map.getOrDefault(trans(n - 1, n - 1), -1); 
+        return -1;
+    }
+    
+    // 双向bfs
+    int[][] grid;
+    int steps = 2;
+    int[][] visited;
+    boolean hasans = false;
+    final int[][] dirs = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}; // 左上 -> 上 -> ... -> 右下
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        int n = grid.length;
+        if (grid[0][0] == 1 || grid[n - 1][n - 1] == 1) return -1;
+        if (n == 1) return 1; // 起点即终点
+        this.grid = grid;
+        Queue<int[]> q_start = new ArrayDeque<>();
+        Queue<int[]> q_end = new ArrayDeque<>();
+        visited = new int[n][n]; // 1表示start出发搜素到的点，2表示从end出发搜素到的点
+        q_start.offer(new int[]{0, 0});
+        q_end.offer(new int[]{n - 1, n - 1});
+        visited[0][0] = 1;
+        visited[n - 1][n - 1] = 2;
+        while (!q_start.isEmpty() || !q_end.isEmpty()) {
+            if (hasans) return steps;
+            if (q_start.isEmpty() || (!q_end.isEmpty() && q_end.size() < q_start.size()))
+                bfs(q_end, false, n);
+            else
+                bfs(q_start, true, n);
+        }
+        return -1;
     }
 
-    private void addState(int x, int y, int n, int preStep) {
-        if (x < 0 || x >= n || y < 0 || y >= n || grid[x][y] == 1)
-            return;
-        int curState = trans(x, y);
-        if (preStep + 1 < map.getOrDefault(curState, (int)1e9)) {
-            map.put(curState, preStep + 1);
-            q.offer(new int[]{x, y});
+    private void bfs(Queue<int[]> q, boolean isFromStart, int n) {
+        if (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) { // 每一步只走取size个
+                int[] cur = q.poll();
+                for (int j = 0; j < 8; j++) { // 八个方向
+                    int x = cur[0] + dirs[j][0];
+                    int y = cur[1] + dirs[j][1];
+                    if (x < 0 || x >= n || y < 0 || y >= n || grid[x][y] == 1)
+                        continue;
+                    if (isFromStart) {
+                        if (visited[x][y] == 1) continue;
+                        if (visited[x][y] == 2) {hasans = true; return;}
+                    } else {
+                        if (visited[x][y] == 1) {hasans = true; return;}
+                        if (visited[x][y] == 2) continue;
+                    }
+                    q.offer(new int[]{x, y});
+                    if (isFromStart) visited[x][y] = 1;
+                    else visited[x][y] = 2;
+                }
+            }
+            steps++;
         }
-    }
-
-    // 把x,y的位置信息转换成一个int信息
-    private int trans(int x, int y) {
-        return x * 100 + y;
     }
 }
