@@ -1,0 +1,102 @@
+class Solution {
+    // 773 Hard 滑动谜题 sliding-puzzle
+    // A* 算法
+    HashMap<Integer, Integer> map;
+    PriorityQueue<int[]> q;
+    public int slidingPuzzle(int[][] board) {
+        final int target = 123450;
+        map = new HashMap<>(); // 记录状态和步数
+        // bfs + 股估价
+        q = new PriorityQueue<>(new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return a[0] - b[0]; // 小根，也就是估价之后距离target越近
+            }
+        });
+        int[] newboard = new int[6];
+        // 把board转换成一维数组
+        for (int i = 0; i < 2; i++)
+            for (int j = 0; j < 3; j++)
+                newboard[i * 3 + j] = board[i][j];
+        int start = zip(newboard); // 把一维数组转化成六位数的状态
+        if (start == target) return 0; // 一开始就相同
+        q.offer(new int[]{evaluate(newboard), start});
+        map.put(start, 0);
+        while (!q.isEmpty()) {
+            int curState = q.poll()[1]; // 当前状态的六位数
+            int curStep = map.get(curState); // 当前用了多少步
+            int[] curboard = unzip(curState); // 把数字解析成board
+            int zeroPo = getZeroPo(curboard); // 0在board中的位置
+            // 四个方向交换
+            if (zeroPo != 0 && zeroPo != 3) // 左
+                addNextState(curboard, zeroPo, zeroPo - 1, curStep);
+            if (zeroPo != 2 && zeroPo != 5) // 右
+                addNextState(curboard, zeroPo, zeroPo + 1, curStep);
+            if (zeroPo >= 3) // 上
+                addNextState(curboard, zeroPo, zeroPo - 3, curStep);
+            if (zeroPo < 3) // 下
+                addNextState(curboard, zeroPo, zeroPo + 3, curStep);
+            if (map.containsKey(target))
+                return curStep + 1;
+        }
+        return -1;
+    }
+
+    // A*算法 估价函数
+    // 计算：在理想状态下，当前board离目标最少的步数。也就是无视0的位置，只管交换至少需要多少步
+    private int evaluate(int[] board) {
+        int res = 0;
+        for (int i = 0; i < 6; i++) {
+            if (board[i] == 0) continue; // 不管0
+            int x = i / 3, y = i % 3;
+            // target = {1,2,3,4,5,0}
+            // board[i] - 1也就是1要去到index = 0，4要去到index = 3
+            int targetx = (board[i] - 1) / 3, targety = (board[i] - 1) % 3;
+            res += (Math.abs(x - targetx) + Math.abs(y - targety));
+        }
+        return res;
+    }
+
+    // 把下一个状态加入map
+    private void addNextState(int[] preboard, int prePo, int newPo, int preStep) {
+        swap(preboard, prePo, newPo);
+        int curState = zip(preboard);
+        if (!map.containsKey(curState)) {
+            map.put(curState, preStep + 1);
+            // 当前已经走的步数 + 估价
+            q.offer(new int[]{preStep + 1 + evaluate(preboard), curState}); 
+        }
+        swap(preboard, prePo, newPo); // 还原状态
+    }
+
+    // 从一维数组中找到0的位置
+    private int getZeroPo(int[] board) {
+        for (int i = 0; i < 6; i++)
+            if (board[i] == 0)
+                return i;
+        return -1;
+    }
+
+    // 把一维数组转化为六位数
+    private int zip(int[] origin) {
+        int res = 0;
+        for (int i = 0; i < 6; i++)
+            res = res * 10 + origin[i];
+        return res;
+    }
+
+    // 把六位数的状态转换成一维数组
+    private int[] unzip(int origin) {
+        int[] res = new int[6];
+        for  (int i = 5; i >= 0; i--) {
+            res[i] = origin % 10;
+            origin /= 10;
+        }
+        return res;
+    }
+
+    private void swap(int[] board, int a, int b) {
+        int tmp = board[a];
+        board[a] = board[b];
+        board[b] = tmp;
+    }
+}
