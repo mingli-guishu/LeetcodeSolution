@@ -1,0 +1,23 @@
+class Solution {
+    // 239 Hard 滑动窗口最大值 sliding-window-maximum 
+    // 红黑树
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        TreeMap<Integer, Integer> map = new TreeMap<>(); // nums[i], count
+        int[] ans = new int[nums.length - k + 1];
+        for (int i = 0; i < k; i++) {
+            if (map.containsKey(nums[i])) map.put(nums[i], map.get(nums[i]) + 1);
+            else map.put(nums[i], 1);
+        }
+        ans[0] = map.lastKey(); // 最大值
+        for (int i = k; i < nums.length; i++) {
+            // 弹出越界
+            if (map.get(nums[i - k]) == 1) map.remove(nums[i - k]);
+            else map.put(nums[i - k], map.get(nums[i - k]) - 1);
+            // 加入红黑树
+            if (map.containsKey(nums[i])) map.put(nums[i], map.get(nums[i]) + 1);
+            else map.put(nums[i], 1);
+            ans[i - k + 1] = map.lastKey();
+        }
+        return ans;
+    }
+}
