@@ -1,0 +1,33 @@
+第九周算法小结
+    高级搜索：
+        剪枝：从被动剪枝，到提前拦截，到主动筛选
+        // 37 Hard 解数独 sudoku-solver
+        https://leetcode-cn.com/problems/sudoku-solver/
+        双向BFS：利用起点终点之间的相互转化，减少搜索深度
+        // 127 Hard 单词接龙 word-ladder
+        https://leetcode-cn.com/problems/word-ladder/
+        // 433 Medium 最小基因变化 minimum-genetic-mutation
+        https://leetcode-cn.com/problems/minimum-genetic-mutation/
+        A*算法：在BFS基础上设计算法提前找到比较可能的答案
+        // 773 Hard 滑动谜题 sliding-puzzle
+        https://leetcode-cn.com/problems/sliding-puzzle/
+        // Acwing 845 + 179 八数码
+        https://www.acwing.com/problem/content/847/
+        https://www.acwing.com/problem/content/181/
+        实战：bfs，双向bfs，A* ?
+        // 1091 Medium 二进制矩阵中的最短路径 shortest-path-in-binary-matrix
+        https://leetcode-cn.com/problems/shortest-path-in-binary-matrix/
+    AVL、红黑树、跳表
+        红黑树：Java中的TreeMap
+        实现一棵平衡树：模板题
+            // Acwing 253 普通平衡树
+            https://www.acwing.com/problem/content/255/
+        实战：
+            // 239 Hard 滑动窗口最大值 sliding-window-maximum
+            https://leetcode-cn.com/problems/sliding-window-maximum/
+            // Acwing 136 邻值查找
+            https://www.acwing.com/problem/content/138/
+        跳表：由于结构多变，利用随机的方法进行维护
+            // 1206 Hard 设计跳表 design-skiplist
+            https://leetcode-cn.com/problems/design-skiplist/
+        
