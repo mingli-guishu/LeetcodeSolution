@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 class Main {
-    // Acwing835 八字码
+    // Acwing835 八数码
     // bfs
     PriorityQueue<int[]> q;
     HashMap<Integer, Integer> map;
