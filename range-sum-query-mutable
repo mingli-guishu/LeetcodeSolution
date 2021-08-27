@@ -1,0 +1,46 @@
+class NumArray {
+    // 307 Medium 区域和检索-数组可修改 range-sum-query-mutable
+    int[] a; // 原始数据
+    int[] c; // 线段树
+    int len;
+    public NumArray(int[] nums) {
+        len = nums.length;
+        a = new int[len + 1];
+        c = new int[len + 1];
+        for (int i = 1; i <= len; i++) {
+            a[i] = nums[i - 1]; // 为a赋值
+            add(i, a[i]); // 为c赋值
+        }   
+    }
+    
+    public void update(int index, int val) {
+        index++; // 下标从1开始
+        int data = val - a[index]; // 得到增量
+        add(index, data); // 利用增量更新
+        a[index] = val; // 修改原始数据
+    }
+    
+    public int sumRange(int left, int right) {
+        left++; right++; // 下标从1开始
+        return query(right) - query(left - 1); // 前缀和
+    }
+
+    private int query(int index) {
+        int ans = 0;
+        for (; index > 0; index -= lowbit(index)) // 与add不同的减号
+            ans += c[index];
+        return ans;
+    }
+
+    // 线段树增加
+    // 从子到夫的增加
+    private void add(int index, int data) {
+        for (; index <= len; index += lowbit(index))
+            c[index] += data;
+    }
+
+    // 找到二进制下最后一位的1
+    private int lowbit(int index) {
+        return index & (-index);
+    }
+}
