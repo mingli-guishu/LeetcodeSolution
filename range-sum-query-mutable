@@ -1,7 +1,8 @@
 class NumArray {
     // 307 Medium 区域和检索-数组可修改 range-sum-query-mutable
+    // 树状数组
     int[] a; // 原始数据
-    int[] c; // 线段树
+    int[] c; // 树状数组
     int len;
     public NumArray(int[] nums) {
         len = nums.length;
@@ -32,8 +33,7 @@ class NumArray {
         return ans;
     }
 
-    // 线段树增加
-    // 从子到夫的增加
+    // 从子到父的增加
     private void add(int index, int data) {
         for (; index <= len; index += lowbit(index))
             c[index] += data;
@@ -42,5 +42,86 @@ class NumArray {
     // 找到二进制下最后一位的1
     private int lowbit(int index) {
         return index & (-index);
+    }
+    
+    // ------------线段树-------------
+    SegmentTree segTree;
+    public NumArray(int[] nums) {
+        segTree = new SegmentTree(nums);
+    }
+    
+    public void update(int index, int val) {
+        segTree.change(index, val);
+    }
+    
+    public int sumRange(int left, int right) {
+        return segTree.query(left, right);
+    }
+}
+
+// 线段树类
+class SegmentTree {
+    Node[] a; // 线段树数组
+    int len;
+    public SegmentTree(int[] nums) {
+        len = nums.length;
+        a = new Node[4 * len];
+        build(1, 0, len - 1, nums); // 从a的root节点开始(index = 1)，创建区间0~len - 1的线段树
+    }
+
+    // 递归创建线段树
+    private void build(int cur, int l, int r, int[] nums) {
+        a[cur] = new Node(l, r);
+        if (l == r) {
+            a[cur].sum = nums[l];
+            return;
+        }
+        int mid = l + (r - l) / 2;
+        build(cur * 2, l, mid, nums);
+        build(cur * 2 + 1, mid + 1, r, nums);
+        a[cur].sum = a[cur * 2].sum + a[cur * 2 + 1].sum;
+    }
+
+    // 外部可见方法
+    public void change(int index,int val) {
+        change(1, index, val);
+    }
+    
+    // 外部可见方法
+    public int query(int l, int r) {
+        return query(1, l, r);
+    }
+
+    // 单点修改
+    private void change(int cur, int index, int val) {
+        if (a[cur].l == a[cur].r) {
+            a[cur].sum = val;
+            return;
+        }
+        int mid = a[cur].l + (a[cur].r - a[cur].l) / 2;
+        if (index <= mid) change(cur * 2, index, val);
+        else change(cur * 2 + 1, index, val);
+        a[cur].sum = a[cur * 2].sum + a[cur * 2 + 1].sum;
+    }
+
+    // 区间查询
+    private int query(int cur, int l, int r) {
+        // l <= cur.l <= cur.r <= r
+        if (l <= a[cur].l && a[cur].r <= r)
+            return a[cur].sum;
+        int res = 0;
+        int mid = a[cur].l + (a[cur].r - a[cur].l) / 2;
+        if (l <= mid) res += query(cur * 2, l, r);
+        if (r > mid) res += query(cur * 2 + 1, l, r);
+        return res;
+    }
+
+    private class Node {
+        int l, r; // 每个节点包含的区间的左右端点
+        int sum; // 区间和
+        Node(int l, int r) {
+            this.l = l;
+            this.r = r;
+        }
     }
 }
