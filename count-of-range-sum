@@ -1,0 +1,66 @@
+class Solution {
+    // 327 Hard 区间和的个数 count-of-range-sum
+    // ----------树状数组----------
+    public int countRangeSum(int[] nums, int lower, int upper) {
+        long[] s = new long[nums.length + 1];
+        for (int i = 1; i <= nums.length; i++)
+            s[i] = s[i - 1] + nums[i - 1];
+        // 离散化
+        Set<Long> set = new HashSet<>();
+        // 欲找到某sum[j]使得 lower <= sum[i] - sum[j] <= upper
+        // 所以 sum[i] - upper <= sum[j] <= sum[i] - lower
+        for (long num : s) { 
+            set.add(num);
+            set.add(num - lower);
+            set.add(num - upper);
+        }
+        List<Long> allnums = new ArrayList<>(set);
+        Collections.sort(allnums);
+        HashMap<Long, Integer> map = new HashMap<>();
+        int count = 1; // map离散化后从1开始，对应树状数组中也从1开始
+        for (long num : allnums)
+            map.put(num, count++);
+
+        int ans = 0;
+        BIT bit = new BIT(allnums.size());
+        for (int i = 0; i < s.length; i++) {
+            int l = map.get(s[i] - upper);
+            int r = map.get(s[i] - lower);
+            // 查询 sum[i] - upper <= sum[j] <= sum[i] - lower
+            // 也就是 query(1 ~ r) - query(1 ~ l - 1) 
+            // 由于map离散后的下标从1开始，与树状数组吻合，所以此处不需要自增
+            ans += bit.query(r) - bit.query(l - 1);
+            // 在此处才开始build树状数组而不是初始化的时候才build
+            // 因为默认i > j，每次query时都是向前找j
+            bit.update(map.get(s[i]), 1);
+        }
+        return ans;
+    }
+}
+
+// 树状数组
+class BIT {
+    int[] a;
+    int len;
+    BIT(int len) {
+        this.len = len;
+        a = new int[len + 1];
+    }
+
+    public int query(int x) {
+        int res = 0;
+        for (; x > 0; x -= lowbit(x))
+            res += a[x];
+        return res;
+    }
+
+    // 单点修改
+    public void update(int x, int val) {
+        for (; x <= len; x += lowbit(x))
+            a[x] += val;
+    }
+
+    private int lowbit(int x) {
+        return x & (-x);
+    }
+}
