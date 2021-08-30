@@ -63,4 +63,97 @@ class BIT {
     private int lowbit(int x) {
         return x & (-x);
     }
+    
+    // ----------线段树----------
+    class Solution {
+    public int countRangeSum(int[] nums, int lower, int upper) {
+        long[] s = new long[nums.length + 1];
+        for (int i = 1; i <= nums.length; i++)
+            s[i] = s[i - 1] + nums[i - 1];
+        // 离散化
+        Set<Long> set = new HashSet<>();
+        // 欲找到某sum[j]使得 lower <= sum[i] - sum[j] <= upper
+        // 所以 sum[i] - upper <= sum[j] <= sum[i] - lower
+        for (long num : s) { 
+            set.add(num);
+            set.add(num - lower);
+            set.add(num - upper);
+        }
+        List<Long> allnums = new ArrayList<>(set);
+        Collections.sort(allnums);
+        HashMap<Long, Integer> map = new HashMap<>();
+        int count = 0; // 与树状数组不同，线段树存储的区间从0开始
+        for (long num : allnums)
+            map.put(num, count++);
+
+        int ans = 0;
+        SegmentTree segtree = new SegmentTree(allnums.size());
+        for (int i = 0; i < s.length; i++) {
+            int l = map.get(s[i] - upper);
+            int r = map.get(s[i] - lower);
+            ans += segtree.query(l, r);
+            segtree.add(map.get(s[i]));
+        }
+        return ans;
+    }
+}
+
+// 线段树
+class SegmentTree {
+    Node[] a;
+    int len;
+    SegmentTree(int len) {
+        this.len = len;
+        a = new Node[4 * len];
+        build(1, 0, len - 1);
+    }
+
+    private void build(int cur, int l, int r) {
+        a[cur] = new Node(l, r);
+        if (l == r) return;
+        int mid = a[cur].l + (a[cur].r - a[cur].l) / 2;
+        build(cur * 2, l, mid);
+        build(cur * 2 + 1, mid + 1, r);
+    }
+
+    public int query(int l, int r) {
+        return query(1, l, r);
+    }
+
+    public void add(int index) {
+        add(1, index);
+    }
+
+    private int query(int cur, int l, int r) {
+        if (l <= a[cur].l && a[cur].r <= r)
+            return a[cur].data;
+        int res = 0;
+        int mid = a[cur].l + (a[cur].r - a[cur].l) / 2;
+        if (l <= mid) res += query(cur * 2, l, r);
+        if (r > mid) res += query(cur * 2 + 1, l, r);
+        return res;
+    }
+
+    // 单点修改
+    public void add(int cur, int index) {
+        if (a[cur].l == a[cur].r) { // 找到了
+            a[cur].data += 1;
+            return;
+        }
+        int mid = a[cur].l + (a[cur].r - a[cur].l) / 2;
+        if (index <= mid) add(cur * 2, index);
+        else add(cur * 2 + 1, index);
+        a[cur].data = a[cur * 2].data + a[cur * 2 + 1].data;
+    }
+
+    private class Node {
+        int l, r;
+        int data;
+        Node(int l, int r) {
+            this.l = l;
+            this.r = r;
+            this.data = 0;
+        }
+    }
+}
 }
