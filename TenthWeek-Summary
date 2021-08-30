@@ -1,0 +1,24 @@
+第十周算法小结
+    树状数组、线段树、离散化
+        树状数组
+            利用lowbit()实现前缀和的数据结构，对比前缀和数组，其优点在于可以“随原数组的改变而改变”
+            模板题：
+                // 307 Medium 区域和检索-数组可修改 range-sum-query-mutable
+                https://leetcode-cn.com/problems/range-sum-query-mutable/
+        线段树
+            用于统计并维护区间信息的类似于二叉树的结构，优点在于有优秀的时间复杂度，基于懒惰修改的线段树在query()和update()都是logN的复杂度
+            模板题：
+                // 307 Medium 区域和检索-数组可修改 range-sum-query-mutable
+                https://leetcode-cn.com/problems/range-sum-query-mutable/
+                // Acwing243 一个简单的整数问题2
+                https://www.acwing.com/problem/content/description/244/
+        离散化
+            基于排序和HashMap，使得离散的数据集中，通过处理集中的数据来映射到原本的问题
+            // 699 Hard 掉落的方块 falling-squares
+            // 纯暴力？ 离散化 + 暴力？ 离散化 + 线段树？
+            https://leetcode-cn.com/problems/falling-squares/
+        综合实战
+            // 327 Hard 区间和个数 count-of-range-sum
+            // 前缀和？树状数组？线段树？
+            https://leetcode-cn.com/problems/count-of-range-sum/
+    位运算(缺课了，还在补[手动滑稽])
